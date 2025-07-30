@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Muscle Cars",
+    "image": "src/assets/car.png"
+  },
+  {
+    "name": "Sports Cars",
+    "image": "src/assets/car.png"
+  },
+  {
+    "name": "Off-Road",
+    "image": "src/assets/car.png"
+  },
+  {
+    "name": "Classics",
+    "image": "src/assets/car.png"
+  }
+]
