@@ -1,8 +1,17 @@
 import React from 'react';
 import hotwheels from './hotwheels.json';
 import { FaShoppingCart } from 'react-icons/fa';
+import { useCart } from '../../CartContext/CartContext'; // Import cart hook
 
 export default function HotWheelsGrid() {
+  // Get the addToCart function from cart context
+  const { addToCart } = useCart();
+
+  // Handle add to cart button click
+  const handleAddToCart = (car) => {
+    addToCart(car);
+  };
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-screen-2xl px-2 py-16 sm:py-24">
@@ -26,13 +35,14 @@ export default function HotWheelsGrid() {
               <div className="flex-1 flex flex-col justify-center px-4">
                 <h3 className="mt-4 text-1xl font-bold">{car.name}</h3>
                 <p className="mt-1 text-lg font-medium text-gray-900">Nrs. {car.price}</p>
-              <button
-  type="button"
-  className="mt-3 inline-flex items-center justify-center px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition cursor-pointer"
->
-  <FaShoppingCart className="h-5 w-5 mr-3" />
-  Add to Cart
-</button>
+                <button
+                  type="button"
+                  onClick={() => handleAddToCart(car)}
+                  className="mt-3 inline-flex items-center justify-center px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition cursor-pointer"
+                >
+                  <FaShoppingCart className="h-5 w-5 mr-3" />
+                  Add to Cart
+                </button>
               </div>
             </div>
           ))}

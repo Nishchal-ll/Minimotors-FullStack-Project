@@ -1,7 +1,7 @@
 import Navbar from '../Navbar/Navbar'
-import Body from '../HomeMainPage/Body/Body'
-import Cards from '../HomeMainPage/Cards/Cards'
-import Accessories  from '../HomeMainPage/Accessories/Accessories'
+import Body from './Body/Body'
+import Cards from './Cards/Cards'
+import Accessories  from './Accessories/Accessories'
 import Footer from '../Footer/Footer'
 
 function Homepage(){

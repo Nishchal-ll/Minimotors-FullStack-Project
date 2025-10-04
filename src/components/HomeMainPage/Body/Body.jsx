@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 function Body() {
   return (
     <>
-      <div className="flex flex-col lg:flex-row justify-center items-center mt-8 sm:mt-12 md:mt-16 lg:mt-55 px-4 sm:px-6 lg:px-0">
+      <div className="flex flex-col lg:flex-row justify-center items-center mt-36 sm:mt-12 md:mt-16 lg:mt-55 px-4 sm:px-6 lg:px-0">
         <div className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl text-center lg:text-left mb-8 lg:mb-0">
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-bold mb-4">
             Find, collect, and shop mini cars <span className="text-blue-500">Easily</span>
