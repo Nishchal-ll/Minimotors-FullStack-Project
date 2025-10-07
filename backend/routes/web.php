@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,17 @@ Route::post('/register', [AuthController::class,'Register'])->name('register');
 Route::post('/login', [AuthController::class,'Login'])->name('login');
 
 Route::get('/dashboard', function () {
-    return "<h1>Welcome to your Dashboard 🎉</h1>";
+    return view('dashboard');
 })->name('dashboard');
 
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');
+
+Route::get('/dashboard', [ItemController::class, 'index'])->name('dashboard');
+Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
+Route::post('/items', [ItemController::class, 'store'])->name('items.store');
+Route::get('/items/{id}/edit', [ItemController::class, 'edit'])->name('items.edit');
+Route::put('/items/{id}', [ItemController::class, 'update'])->name('items.update');
+Route::delete('/items/{id}', [ItemController::class, 'destroy'])->name('items.destroy');

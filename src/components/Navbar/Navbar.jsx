@@ -138,12 +138,14 @@ function Navbar() {
                     </div>
                   </div>
                 )}
-              </div>
+ </div>
 
-              <FaUserCircle 
-                className="hover:text-blue-600 transition duration-200 cursor-pointer" 
-              />
-            </div>
+<FaUserCircle
+  className="hover:text-blue-600 transition duration-200 cursor-pointer"
+  onClick={() => window.open('http://127.0.0.1:8000/', '_blank')}
+  title="Open Admin Panel"
+/>
+</div>
             
             {/* Mobile Menu Toggle */}
             <button 
