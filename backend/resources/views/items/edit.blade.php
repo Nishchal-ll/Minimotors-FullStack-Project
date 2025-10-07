@@ -1,37 +1,10 @@
-{{-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Item</title>
-</head>
-<body>
-    <h1>Edit Item</h1>
-
-    <form action="{{ route('items.update', $item->id) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-
-        <label>Name:</label>
-        <input type="text" name="name" value="{{ $item->name }}"><br><br>
-
-        <label>Price:</label>
-        <input type="number" name="price" value="{{ $item->price }}"><br><br>
-
-        <label>Current Image:</label><br>
-        <img src="{{ asset('storage/' . $item->image) }}" width="100"><br><br>
-
-        <label>Change Image (optional):</label>
-        <input type="file" name="image"><br><br>
-
-        <button type="submit">Update</button>
-    </form>
-</body>
-</html> --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Item - MiniMotors</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
