@@ -1,16 +1,33 @@
-import React from 'react';
-import hotwheels from './hotwheels.json';
+import React, { useEffect, useState } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
-import { useCart } from '../../CartContext/CartContext'; // Import cart hook
+import { useCart } from '../../CartContext/CartContext';
+import axios from "axios";
 
 export default function HotWheelsGrid() {
-  // Get the addToCart function from cart context
   const { addToCart } = useCart();
+  const [cars, setCars] = useState([]); // state for DB items
+  const [loading, setLoading] = useState(true);
 
-  // Handle add to cart button click
+  useEffect(() => {
+    // Fetch items from Laravel API
+    axios.get("http://127.0.0.1:8000/api/items")
+      .then((response) => {
+        setCars(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching items:", error);
+        setLoading(false);
+      });
+  }, []);
+
   const handleAddToCart = (car) => {
     addToCart(car);
   };
+
+  if (loading) {
+    return <div className="text-center py-20 text-xl">Loading products...</div>;
+  }
 
   return (
     <div className="bg-white">
@@ -20,20 +37,20 @@ export default function HotWheelsGrid() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-          {hotwheels.map((car) => (
+          {cars.map((car) => (
             <div
               key={car.id}
               className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 overflow-hidden h-96 flex flex-col justify-between cursor-pointer"
             >
               <div className="h-40 mt-10 overflow-hidden flex justify-center items-center">
                 <img
-                  src={car.image}
+                  src={`http://127.0.0.1:8000/storage/${car.image}`}
                   alt={car.name}
                   className="h-48 object-contain"
                 />
               </div>
               <div className="flex-1 flex flex-col justify-center px-4">
-                <h3 className="mt-4 text-1xl font-bold">{car.name}</h3>
+                <h3 className="mt-4 text-xl font-bold">{car.name}</h3>
                 <p className="mt-1 text-lg font-medium text-gray-900">Nrs. {car.price}</p>
                 <button
                   type="button"

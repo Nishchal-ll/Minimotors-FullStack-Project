@@ -79,4 +79,10 @@ class ItemController extends Controller
 
     return redirect()->route('dashboard')->with('success', 'Item deleted successfully!');
 }
+
+public function apiIndex()
+{
+    return response()->json(Item::all());
+}
+
 }
