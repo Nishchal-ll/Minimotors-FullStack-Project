@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +49,6 @@ Route::post('/user/login', [AuthController::class, 'userLogin'])->name('user.log
 Route::get('/user/register', [AuthController::class, 'showUserRegister'])->name('user.register');
 Route::post('/user/register', [AuthController::class, 'userRegister'])->name('user.register.post');
 
-// Protect checkout with auth middleware
 Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');

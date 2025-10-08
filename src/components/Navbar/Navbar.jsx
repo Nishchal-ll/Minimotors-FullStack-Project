@@ -129,9 +129,13 @@ function Navbar() {
                               <span>Total:</span>
                               <span>Nrs. {getCartTotal()}</span>
                             </div>
-                            <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold">
-                              Checkout
-                            </button>
+                           <button
+  onClick={() => window.open("http://127.0.0.1:8000/checkout", "_blank")}
+  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold"
+>
+  Checkout
+</button>
+
                           </div>
                         </>
                       )}
