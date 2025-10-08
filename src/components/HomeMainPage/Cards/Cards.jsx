@@ -1,6 +1,5 @@
 import React from 'react';
 import hotwheels from './hotwheels.json';
-import axios from "axios";
 
 export default function CategoryCards() {
   return (

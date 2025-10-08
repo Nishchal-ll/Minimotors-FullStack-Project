@@ -1,30 +1,53 @@
-import React, { useState } from 'react';
-import hotwheels from './hotwheels.json';
+import React, { useState, useEffect } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import { BsBagCheckFill } from 'react-icons/bs';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
-import { useCart } from '../CartContext/CartContext'; // Import cart hook
+import { useCart } from '../CartContext/CartContext';
+import axios from 'axios';
 
 export default function ShopPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  
-  // Get the addToCart function from cart context
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const { addToCart } = useCart();
 
-  const categories = ['All', ...new Set(hotwheels.map((car) => car.category))];
+  useEffect(() => {
+    axios
+      .get('http://127.0.0.1:8000/api/items')
+      .then((response) => {
+        setProducts(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching products:', error);
+        setLoading(false);
+      });
+  }, []);
 
-  const filteredProducts = hotwheels.filter((car) => {
+  const categories = ['All', ...new Set(products.map((car) => car.category || 'Other'))];
+
+  const filteredProducts = products.filter((car) => {
     const matchesCategory = selectedCategory === 'All' || car.category === selectedCategory;
     const matchesSearch = car.name.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  // Handle add to cart button click
   const handleAddToCart = (car) => {
     addToCart(car);
   };
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="text-center py-20 text-xl">Loading products...</div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -59,13 +82,13 @@ export default function ShopPage() {
                 >
                   <div className="h-40 mt-10 overflow-hidden flex justify-center items-center">
                     <img
-                      src={car.image}
+                      src={`http://127.0.0.1:8000/storage/${car.image}`}
                       alt={car.name}
                       className="h-48 object-contain"
                     />
                   </div>
                   <div className="flex-1 flex flex-col justify-center px-4">
-                    <h3 className="mt-4 text-1xl font-bold">{car.name}</h3>
+                    <h3 className="mt-4 text-xl font-bold">{car.name}</h3>
                     <p className="mt-1 text-lg font-medium text-gray-900">
                       Nrs. {car.price}
                     </p>
