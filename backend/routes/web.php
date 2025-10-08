@@ -18,11 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/register', [AuthController::class,'showRegister'])->name('show.register');
-Route::get('/login', [AuthController::class,'showLogin'])->name('show.login');
+Route::get('admin/register', [AuthController::class,'showRegister'])->name('show.register');
+Route::get('admin/login', [AuthController::class,'showLogin'])->name('show.login');
 
-Route::post('/register', [AuthController::class,'Register'])->name('register');
-Route::post('/login', [AuthController::class,'Login'])->name('login');
+Route::post('admin/register', [AuthController::class,'Register'])->name('register');
+Route::post('admin/login', [AuthController::class,'Login'])->name('login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -41,3 +41,15 @@ Route::put('/items/{id}', [ItemController::class, 'update'])->name('items.update
 Route::delete('/items/{id}', [ItemController::class, 'destroy'])->name('items.destroy');
 
 Route::get('api/items', [ItemController::class, 'apiIndex']);
+
+Route::get('/user/login', [AuthController::class, 'showUserLogin'])->name('user.login');
+Route::post('/user/login', [AuthController::class, 'userLogin'])->name('user.login.post');
+
+Route::get('/user/register', [AuthController::class, 'showUserRegister'])->name('user.register');
+Route::post('/user/register', [AuthController::class, 'userRegister'])->name('user.register.post');
+
+// Protect checkout with auth middleware
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+});
