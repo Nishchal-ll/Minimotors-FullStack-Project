@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Register</title>
+    <title>Client Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-green-50 via-white to-green-100 min-h-screen font-sans antialiased">
@@ -15,30 +15,13 @@
                 <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-400 mb-1">
                     Client Portal
                 </h1>
-                <p class="text-gray-600 text-sm">Create your account</p>
+                <p class="text-gray-600 text-sm">Login to your account</p>
             </div>
 
-            <!-- Register Card -->
+            <!-- Login Card -->
             <div class="bg-white rounded-3xl shadow-2xl p-8 border border-green-100">
-                <form action="{{ route('client.register') }}" method="POST" class="space-y-6">
+                <form action="{{ route('client.login') }}" method="POST" class="space-y-6">
                     @csrf
-
-                    <!-- Name Field -->
-                    <div>
-                        <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            value="{{ old('name') }}"
-                            required
-                            class="w-full px-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-200 transition duration-200"
-                            placeholder="Enter your name"
-                        >
-                        @error('name')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
 
                     <!-- Email Field -->
                     <div>
@@ -73,17 +56,13 @@
                         @enderror
                     </div>
 
-                    <!-- Confirm Password -->
-                    <div>
-                        <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
-                        <input
-                            type="password"
-                            name="password_confirmation"
-                            id="password_confirmation"
-                            required
-                            class="w-full px-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-200 transition duration-200"
-                            placeholder="Confirm your password"
-                        >
+                    <!-- Remember Me -->
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 text-green-500 border-green-300 rounded focus:ring-green-400">
+                            <span class="ml-2 text-gray-600">Remember me</span>
+                        </label>
+                        <a href="#" class="text-green-500 hover:text-green-600 font-semibold transition duration-200">Forgot password?</a>
                     </div>
 
                     <!-- Submit Button -->
@@ -91,15 +70,15 @@
                         type="submit"
                         class="w-full bg-gradient-to-r from-green-500 to-emerald-400 hover:from-green-600 hover:to-emerald-500 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-300"
                     >
-                        Register
+                        Login
                     </button>
                 </form>
 
-                <!-- Login Link -->
+                <!-- Register Link -->
                 <div class="mt-6 text-center">
                     <p class="text-gray-600">
-                        Already have an account?
-                        <a href="{{ route('client.login') }}" class="text-green-500 hover:text-green-600 font-semibold transition duration-200">Login here</a>
+                        Don't have an account?
+                        <a href="{{ route('client.register') }}" class="text-green-500 hover:text-green-600 font-semibold transition duration-200">Register here</a>
                     </p>
                 </div>
             </div>

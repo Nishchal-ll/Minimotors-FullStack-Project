@@ -5,7 +5,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ClientAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,13 +49,3 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 });
 
-Route::get('/register', [ClientAuthController::class, 'showRegister'])->name('client.register');
-Route::post('/register', [ClientAuthController::class, 'register']);
-
-Route::get('/login', [ClientAuthController::class, 'showLogin'])->name('client.login');
-Route::post('/login', [ClientAuthController::class, 'login']);
-
-Route::middleware('auth:client')->group(function() {
-    Route::get('/account', [ClientAuthController::class, 'account'])->name('client.account');
-    Route::post('/logout', [ClientAuthController::class, 'logout'])->name('client.logout');
-});

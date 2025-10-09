@@ -58,10 +58,17 @@ class ClientAuthController extends Controller
         return redirect()->route('client.login');
     }
 
-    // Account page
-    public function account() {
-        $client = Auth::guard('client')->user();
-        $orders = $client->orders()->get();
-        return view('client.account', compact('client', 'orders'));
+public function account()
+{
+    if (!Auth::guard('client')->check()) {
+        // User not logged in → show login/register forms
+        return view('client.account', ['client' => null, 'orders' => null]);
     }
+
+    $client = Auth::guard('client')->user();
+    $orders = $client->orders()->get();
+
+    return view('client.account', compact('client', 'orders'));
+}
+
 }
