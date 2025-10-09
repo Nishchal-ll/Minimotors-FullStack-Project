@@ -49,6 +49,9 @@ function Navbar() {
             <li className="hover:text-blue-600 cursor-pointer transition duration-200">
               <Link to="/contact">Contact</Link>
             </li>
+             <li className="hover:text-blue-600 cursor-pointer transition duration-200">
+              <Link to="/account">Account</Link>
+            </li>
           </ul>
 
           {/* Right: Cart & User Icons */}
@@ -180,6 +183,9 @@ function Navbar() {
             </li>
             <li className="hover:text-blue-600 cursor-pointer transition duration-200">
               <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
+            </li>
+            <li className="hover:text-blue-600 cursor-pointer transition duration-200">
+              <Link to="/account" onClick={() => setIsMenuOpen(false)}>Account</Link>
             </li>
           </ul>
         </div>

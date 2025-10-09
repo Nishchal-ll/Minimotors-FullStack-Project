@@ -5,7 +5,7 @@ import Homepage from './components/HomeMainPage/Homepage'
 import About from './components/AboutMainPage/About'
 import Contact from './components/ContactMainPage/Contact'
 import Shop from './components/ShopPageMain/Shop'
-import Admin from './components/AdminPortal/Admin';
+import Account from './components/Account/Account';
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
        <Route path="/about" element={<About />} />
        <Route path="/contact" element={<Contact />} />
         <Route path="/shop" element={<Shop />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </Router>
     </CartProvider>
