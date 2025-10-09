@@ -147,13 +147,17 @@ function Navbar() {
                 )}
  </div>
 
-<FaUserCircle
-  className="hover:text-blue-600 transition duration-200 cursor-pointer"
+<div
+  className="flex items-center space-x-2 cursor-pointer hover:text-blue-600 transition duration-200"
   onClick={() => window.open('http://127.0.0.1:8000/', '_blank')}
   title="Open Admin Panel"
-/>
+>
+  <FaUserCircle />
+  <span className="text-sm">Admin Login</span>
 </div>
-            
+
+</div>
+   
             {/* Mobile Menu Toggle */}
             <button 
               className="lg:hidden text-gray-700 text-2xl hover:text-blue-600 transition duration-200"
