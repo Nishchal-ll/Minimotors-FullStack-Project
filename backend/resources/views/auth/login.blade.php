@@ -32,8 +32,13 @@
             <div class="bg-white rounded-3xl shadow-2xl p-8 border border-blue-100">
                 <div class="mb-8">
                     <h2 class="text-3xl font-bold text-gray-800 mb-2">Welcome Back</h2>
-                    <p class="text-gray-500">Sign in to your account</p>
+                    <p class="text-gray-500">Login to your account</p>
                 </div>
+                @if ($errors->any())
+    <div class="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl">
+        {{ $errors->first('email') }}
+    </div>
+@endif
 
                 <form action="{{route('login')}}" method="POST" class="space-y-6">
                     @csrf
