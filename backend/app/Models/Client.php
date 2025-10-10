@@ -1,28 +1,72 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Controllers\Api;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
-class Client extends Authenticatable
+class ClientAuthController extends Controller
 {
-    use Notifiable;
-
-    protected $table = 'clients';
-
-    protected $fillable = ['name', 'email', 'password'];
-
-    protected $hidden = ['password', 'remember_token'];
-
-    public function setPasswordAttribute($password)
+    // Client Registration
+    public function register(Request $request)
     {
-        $this->attributes['password'] = Hash::make($password);
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:clients,email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        // Create client
+        $client = Client::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+        ]);
+
+        // Create token
+        $token = $client->createToken('client-token')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user'  => $client
+        ], 201);
     }
 
-    public function orders()
+    // Client Login
+    public function login(Request $request)
     {
-        return $this->hasMany(Order::class, 'client_id');
+        $data = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $client = Client::where('email', $data['email'])->first();
+
+        if (!$client || !Hash::check($data['password'], $client->password)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
+        $token = $client->createToken('client-token')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user'  => $client
+        ]);
+    }
+
+    // Optional: Get current authenticated client
+    public function me(Request $request)
+    {
+        return response()->json($request->user());
+    }
+
+    // Optional: Logout (delete current token)
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logged out']);
     }
 }

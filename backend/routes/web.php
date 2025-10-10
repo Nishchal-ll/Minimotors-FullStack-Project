@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\Authenticate;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,17 +24,14 @@ Route::get('/', function () {
 Route::get('admin/register', [AuthController::class,'showRegister'])->name('show.register');
 Route::get('admin/login', [AuthController::class,'showLogin'])->name('show.login');
 
-Route::post('admin/register', [AuthController::class,'Register'])->name('register');
-Route::post('admin/login', [AuthController::class,'Login'])->name('login');
+Route::post('admin/register', [AuthController::class,'register'])->name('register');
+Route::post('admin/login', [AuthController::class,'login'])->name('login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard');
+})->middleware('auth')->name('dashboard');
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('admin/login');
-})->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', [ItemController::class, 'index'])->name('dashboard');
 Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
@@ -44,8 +42,7 @@ Route::delete('/items/{id}', [ItemController::class, 'destroy'])->name('items.de
 
 Route::get('api/items', [ItemController::class, 'apiIndex']);
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
-    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
-});
-
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
+//     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+// });

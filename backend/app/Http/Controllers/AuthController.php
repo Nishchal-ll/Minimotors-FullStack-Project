@@ -1,53 +1,62 @@
 <?php
-
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use App\Models\User;
 
 class AuthController extends Controller
 {
     public function showRegister()
     {
-        return view('auth.register');
+        return view('auth.register'); // your register.blade.php
     }
 
     public function showLogin()
     {
-        return view('auth.login');
+        return view('auth.login'); // your login.blade.php
     }
-    
-    public function Register(Request $request)
+
+    public function register(Request $request)
     {
-        $validatedData=$request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Hash the password before saving
-        $validatedData['password'] = bcrypt($validatedData['password']);
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
-        $user = User::create($validatedData);
-        return redirect()->route('dashboard');
+        User::create($validatedData);
+
+        return redirect()->route('show.login')->with('success', 'Registration successful. Please login.');
     }
-    public function Login(Request $request){
+
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        if (auth()->attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('http://127.0.0.1:8000/dashboard');
+            return redirect()->intended(route('dashboard'));
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Invalid credentials.',
         ])->onlyInput('email');
-
     }
 
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
+        return redirect()->route('show.login');
+    }
 }
+
