@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable = ['name', 'email', 'phone', 'address', 'total'];
+    protected $fillable = ['name', 'email', 'phone', 'address', 'items', 'total'];
 
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
+    protected $casts = [
+        'items' => 'array', // Laravel automatically converts JSON to array
+    ];
 }

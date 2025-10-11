@@ -52,4 +52,6 @@ Route::delete('/items/{id}', [ItemController::class, 'destroy'])->name('items.de
 
 Route::get('api/items', [ItemController::class, 'apiIndex']);
 
-Route::get('/orders', [OrderController::class, 'index']); // for admin dashboard
+Route::get('/admin/orders', [App\Http\Controllers\OrderController::class, 'adminIndex']);
+    //  ->middleware('auth:admin');
+
