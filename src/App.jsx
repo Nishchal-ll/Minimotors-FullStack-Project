@@ -5,7 +5,7 @@ import Homepage from './components/HomeMainPage/Homepage'
 import About from './components/AboutMainPage/About'
 import Contact from './components/ContactMainPage/Contact'
 import Shop from './components/ShopPageMain/Shop'
-import Account from './components/Account/Account';
+import Checkout from "./components/Checkout/Checkout";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
        <Route path="/about" element={<About />} />
        <Route path="/contact" element={<Contact />} />
         <Route path="/shop" element={<Shop />} />
-        <Route path="/account" element={<Account />} />
+        <Route path="/checkout" element={<Checkout />} /> 
       </Routes>
     </Router>
     </CartProvider>

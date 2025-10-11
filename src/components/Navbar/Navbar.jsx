@@ -4,6 +4,7 @@ import { FaShoppingCart, FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import {useCart} from '../CartContext/CartContext';
 
+
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,9 +49,6 @@ function Navbar() {
             </li>
             <li className="hover:text-blue-600 cursor-pointer transition duration-200">
               <Link to="/contact">Contact</Link>
-            </li>
-             <li className="hover:text-blue-600 cursor-pointer transition duration-200">
-              <Link to="/account">Account</Link>
             </li>
           </ul>
 
@@ -132,13 +130,12 @@ function Navbar() {
                               <span>Total:</span>
                               <span>Nrs. {getCartTotal()}</span>
                             </div>
-                           <button
-  onClick={() => window.open("http://127.0.0.1:8000/checkout", "_blank")}
-  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold"
+<Link
+  to="/checkout"
+  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold inline-block text-center"
 >
   Checkout
-</button>
-
+</Link>
                           </div>
                         </>
                       )}

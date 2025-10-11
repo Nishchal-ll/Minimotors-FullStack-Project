@@ -5,8 +5,10 @@ import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import { useCart } from '../CartContext/CartContext';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function ShopPage() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [products, setProducts] = useState([]);
@@ -39,6 +41,12 @@ export default function ShopPage() {
     addToCart(car);
   };
 
+  // ✅ Buy Now button handler
+  const handleBuyNow = (item) => {
+    addToCart(item); // optionally add to cart
+    navigate("/checkout", { state: { item } }); // pass item to checkout page
+  };
+
   if (loading) {
     return (
       <>
@@ -58,7 +66,7 @@ export default function ShopPage() {
             Our Products
           </h2>
 
-          {/* Search and Category Filter */}
+          {/* Search */}
           <div className="flex flex-col sm:flex-row justify-start sm:items-center gap-4 mb-20 mt-10">
             <label className="flex items-center gap-2 text-gray-700 font-medium">
               Search for an item:
@@ -106,6 +114,7 @@ export default function ShopPage() {
 
                       <button
                         type="button"
+                        onClick={() => handleBuyNow(car)}
                         className="inline-flex items-center justify-center px-5 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition cursor-pointer"
                       >
                         <BsBagCheckFill className="h-5 w-5 mr-3" />
