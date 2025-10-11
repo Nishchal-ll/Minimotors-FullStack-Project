@@ -10,12 +10,18 @@ class AuthController extends Controller
 {
     public function showRegister()
     {
-        return view('auth.register'); // your register.blade.php
+        if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return view('auth.register');
     }
 
     public function showLogin()
     {
-        return view('auth.login'); // your login.blade.php
+        if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return view('auth.login');
     }
 
     public function register(Request $request)
@@ -40,10 +46,10 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('dashboard'));
-        }
+        if (auth()->attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->route('dashboard');
+    }
 
         return back()->withErrors([
             'email' => 'Invalid credentials.',
@@ -52,11 +58,15 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+         auth()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('show.login');
+    }
+      public function index()
+    {
+        return view('dashboard');
     }
 }
 
