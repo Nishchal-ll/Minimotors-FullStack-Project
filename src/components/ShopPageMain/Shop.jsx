@@ -37,11 +37,17 @@ export default function ShopPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const handleAddToCart = (car) => {
-    addToCart(car);
-  };
 
-  // ✅ Buy Now button handler
+const handleAddToCart = (car) => {
+  const itemWithFullImage = {
+    ...car,
+    image: `http://127.0.0.1:8000/storage/${car.image}`, // full URL
+  };
+  console.log("Adding to cart:", itemWithFullImage); // check in console
+  addToCart(itemWithFullImage);
+};
+
+  
   const handleBuyNow = (item) => {
     addToCart(item); // optionally add to cart
     navigate("/checkout", { state: { item } }); // pass item to checkout page
@@ -136,3 +142,4 @@ export default function ShopPage() {
     </>
   );
 }
+

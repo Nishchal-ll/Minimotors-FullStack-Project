@@ -4,9 +4,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
+use App\Http\Controllers\OrderController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,4 @@ Route::delete('/items/{id}', [ItemController::class, 'destroy'])->name('items.de
 
 Route::get('api/items', [ItemController::class, 'apiIndex']);
 
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
-//     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
-// });
+Route::get('/orders', [OrderController::class, 'index']); // for admin dashboard

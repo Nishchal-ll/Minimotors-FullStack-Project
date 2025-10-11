@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import logo from '../../assets/logo.png';
 import { FaShoppingCart, FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import {useCart} from '../CartContext/CartContext';
 
 
 function Navbar() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showCart, setShowCart] = useState(false);
   
+  
   const { cartItems, getCartCount, removeFromCart, updateQuantity, getCartTotal } = useCart();
+  
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,8 +25,24 @@ function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+
+  //yesma thapeko
+  useEffect(() => {
+  console.log("Cart Items:", cartItems);
+}, [cartItems]);
+
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+   const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
+    // Navigate to checkout and pass cart data
+    navigate("/checkout", { state: { cartItems } });
   };
 
   return (
@@ -90,11 +110,12 @@ function Navbar() {
                               key={item.id}
                               className="flex items-center gap-3 border-b py-3 last:border-b-0"
                             >
-                              <img
-                                src={item.image}
-                                alt={item.name}
-                                className="h-16 w-16 object-contain"
-                              />
+                             
+<img
+  src={item.image}
+  alt={item.name}
+  className="h-16 w-16 object-contain"// optional fallback
+/>
                               <div className="flex-1">
                                 <h4 className="font-semibold text-sm">{item.name}</h4>
                                 <p className="text-sm text-gray-600">
@@ -130,12 +151,12 @@ function Navbar() {
                               <span>Total:</span>
                               <span>Nrs. {getCartTotal()}</span>
                             </div>
-<Link
-  to="/checkout"
-  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold inline-block text-center"
->
-  Checkout
-</Link>
+ <button
+      onClick={handleCheckout}
+      className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold"
+    >
+      Checkout
+    </button>
                           </div>
                         </>
                       )}
@@ -191,6 +212,7 @@ function Navbar() {
           </ul>
         </div>
       </nav>
+      console.log(cartItems);
     </>
   );
 }

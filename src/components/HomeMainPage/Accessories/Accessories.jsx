@@ -21,9 +21,16 @@ export default function HotWheelsGrid() {
       });
   }, []);
 
+  // const handleAddToCart = (car) => {
+  //   addToCart(car);
+  // };
   const handleAddToCart = (car) => {
-    addToCart(car);
-  };
+  addToCart({
+    ...car,
+    image: `http://127.0.0.1:8000/storage/${car.image}`, // full URL
+  });
+};
+
 
   if (loading) {
     return <div className="text-center py-20 text-xl">Loading products...</div>;
@@ -42,13 +49,14 @@ export default function HotWheelsGrid() {
               key={car.id}
               className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 overflow-hidden h-96 flex flex-col justify-between cursor-pointer"
             >
-              <div className="h-40 mt-10 overflow-hidden flex justify-center items-center">
-                <img
-                  src={`http://127.0.0.1:8000/storage/${car.image}`}
-                  alt={car.name}
-                  className="h-48 object-contain"
-                />
-              </div>
+           
+              <div className="h-48 flex justify-center items-center overflow-hidden mt-4">
+  <img
+    src={`http://127.0.0.1:8000/storage/${car.image}`}
+    alt={car.name}
+    className="max-h-full w-auto object-contain"
+  />
+</div>
               <div className="flex-1 flex flex-col justify-center px-4">
                 <h3 className="mt-4 text-xl font-bold">{car.name}</h3>
                 <p className="mt-1 text-lg font-medium text-gray-900">Nrs. {car.price}</p>

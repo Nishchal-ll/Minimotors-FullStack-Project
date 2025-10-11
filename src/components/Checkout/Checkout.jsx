@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
+import { useCart } from "../CartContext/CartContext";
+import axios from "axios";
 
 const Checkout = () => {
-  const location = useLocation();
-  // Either get items from CartContext or from state passed by navigate
-  const items = location.state?.items || location.state?.item ? [location.state.item] : [];
+  const { cartItems, getCartTotal, clearCart } = useCart();
 
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -18,30 +17,49 @@ const Checkout = () => {
   const handleInputChange = (e) =>
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (!userInfo.name || !userInfo.email || !userInfo.phone || !userInfo.address) {
       alert("Please fill all details!");
       return;
     }
 
-    const total = items.reduce(
-      (sum, item) => sum + item.price * (item.quantity || 1),
-      0
-    );
+    if (cartItems.length === 0) {
+      alert("No items in checkout!");
+      return;
+    }
 
+    const total = getCartTotal();
     const order = {
-      user: userInfo,
-      items,
+      name: userInfo.name,
+      email: userInfo.email,
+      phone: userInfo.phone,
+      address: userInfo.address,
+      items: cartItems,
       total,
     };
+console.log("Order to send:", order);
 
-    console.log("Order placed:", order);
+    try {
+      // Send order to Laravel backend
+      const response = await axios.post("http://127.0.0.1:8000/api/orders", order);
+      
+      console.log(response.data);
+      alert("Order placed successfully!");
 
+      // Clear cart after order
+      clearCart();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to place order.");
+      return;
+    }
+
+    // Trigger Khalti Payment if available
     if (window.KhaltiCheckout) {
       const config = {
         publicKey: "test_public_key_your_khalti_key",
-        productIdentity: items.map((i) => i.id).join(","),
-        productName: items.map((i) => i.name).join(", "),
+        productIdentity: cartItems.map((i) => i.id).join(","),
+        productName: cartItems.map((i) => i.name).join(", "),
         productUrl: window.location.href,
         eventHandler: {
           onSuccess(payload) {
@@ -66,53 +84,68 @@ const Checkout = () => {
     }
   };
 
-  if (!items.length) return <p className="text-center mt-10 text-lg">No items in checkout.</p>;
-
-  const totalPrice = items.reduce(
-    (sum, item) => sum + item.price * (item.quantity || 1),
-    0
-  );
+  // If cart is empty
+  if (cartItems.length === 0)
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-center font-extrabold text-blue-700 text-6xl">
+            No items in checkout.
+          </p>
+        </div>
+        <Footer />
+      </>
+    );
 
   return (
     <>
       <Navbar />
       <div className="min-h-screen bg-white py-8 px-4 mt-36">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-black text-blue-600 mb-8 text-center">Checkout</h1>
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-3xl font-black text-blue-600 mb-8 text-center">
+            Checkout
+          </h1>
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Order Summary */}
             <div className="bg-blue-50 rounded-lg p-6 border-2 border-blue-200">
               <h2 className="text-xl font-black text-blue-600 mb-4">Order Summary</h2>
-              
-              {items.map((item) => (
+
+              {cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-lg p-4 mb-4 flex items-center gap-4"
+                  className="bg-white rounded-lg p-4 mb-4 flex items-center gap-4 border"
                 >
                   <img
-                    src={`http://127.0.0.1:8000/storage/${item.image}`}
+                    src={
+                      item.image.startsWith("http")
+                        ? item.image
+                        : `http://127.0.0.1:8000/storage/${item.image}`
+                    }
                     alt={item.name}
-                    className="w-24 h-24 object-contain rounded-lg border"
+                    className="w-24 h-24 object-contain rounded-lg"
                   />
                   <div>
-                    <p className="font-black text-gray-800 mb-2">{item.name}</p>
-                    <p className="text-gray-600">
-                      Price: <span className="font-black">${item.price}</span>
+                    <p className="font-black text-gray-800 mb-1">{item.name}</p>
+                    <p className="text-gray-600 text-sm">
+                      Price: <span className="font-semibold">Nrs. {item.price}</span>
                     </p>
-                    <p className="text-gray-600">
-                      Quantity: <span className="font-black">{item.quantity || 1}</span>
+                    <p className="text-gray-600 text-sm">
+                      Quantity: <span className="font-semibold">{item.quantity || 1}</span>
                     </p>
                   </div>
                 </div>
               ))}
 
               <div className="border-t-2 border-blue-200 pt-4">
-                <p className="text-xl font-black text-blue-600">Total: ${totalPrice}</p>
+                <p className="text-xl font-black text-blue-600">
+                  Total: Nrs. {getCartTotal()}
+                </p>
               </div>
             </div>
 
-            {/* User Information Form */}
+            {/* User Information */}
             <div className="bg-white rounded-lg p-6 border-2 border-blue-200">
               <h2 className="text-xl font-black text-blue-600 mb-4">Your Information</h2>
               <div className="space-y-4">
@@ -122,7 +155,7 @@ const Checkout = () => {
                   placeholder="Full Name"
                   value={userInfo.name}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:border-blue-500 transition"
                 />
                 <input
                   type="email"
@@ -130,7 +163,7 @@ const Checkout = () => {
                   placeholder="Email Address"
                   value={userInfo.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:border-blue-500 transition"
                 />
                 <input
                   type="text"
@@ -138,7 +171,7 @@ const Checkout = () => {
                   placeholder="Phone Number"
                   value={userInfo.phone}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:border-blue-500 transition"
                 />
                 <textarea
                   name="address"
@@ -146,7 +179,7 @@ const Checkout = () => {
                   value={userInfo.address}
                   onChange={handleInputChange}
                   rows="3"
-                  className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                  className="w-full px-4 py-3 border-2 border-blue-200 rounded-lg focus:outline-none focus:border-blue-500 transition resize-none"
                 />
               </div>
             </div>
@@ -158,7 +191,7 @@ const Checkout = () => {
               onClick={handlePlaceOrder}
               className="bg-blue-600 hover:bg-blue-700 text-white font-black py-4 px-12 rounded-lg text-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
             >
-              Pay with Khalti
+              Place Order & Pay
             </button>
             <div className="mt-4 flex items-center justify-center gap-2">
               <p className="text-gray-600">Powered by</p>
