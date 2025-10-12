@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Mail\OrderConfirmationMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
- public function adminIndex()
-{
-    // Fetch all orders
-    $orders = Order::latest()->get();
+    // Admin dashboard orders list
+    public function adminIndex()
+    {
+        $orders = Order::latest()->get();
+        return view('admin.orders', compact('orders'));
+    }
 
-    // Return the dashboard view and pass the orders
-    return view('admin.orders', compact('orders'));
-}
+    // Store order and send confirmation mail
     public function store(Request $request)
     {
         // Validate request
@@ -28,19 +30,35 @@ class OrderController extends Controller
         ]);
 
         // Create order
-        $order = Order::create($request->all());
+        $order = Order::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'items' => json_encode($request->items),
+            'total' => $request->total,
+        ]);
+
+        // ✅ Send confirmation email
+        try {
+            Mail::to($order->email)->send(new OrderConfirmationMail($order));
+        } catch (\Exception $e) {
+            \Log::error('Mail sending failed: ' . $e->getMessage());
+        }
 
         return response()->json([
-            'message' => 'Order placed successfully!',
+            'message' => 'Order placed successfully! Confirmation email sent.',
             'order' => $order
         ]);
     }
-public function markAsComplete($id)
-{
-    $order = Order::findOrFail($id);
-    $order->status = 'completed';
-    $order->save();
 
-    return redirect()->back()->with('success', 'Order marked as completed!');
-}
+    // Mark order as completed
+    public function markAsComplete($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->status = 'completed';
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order marked as completed!');
+    }
 }
