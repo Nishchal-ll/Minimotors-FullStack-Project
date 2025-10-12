@@ -78,10 +78,14 @@
                             </svg>
                         </button>
                         <div class="flex items-center space-x-3">
-                            <div class="text-right">
-                                <p class="text-sm font-semibold text-gray-700">Admin User</p>
-                                <p class="text-xs text-gray-500">Administrator</p>
-                            </div>
+                           <div class="text-right">
+    <p class="text-sm font-semibold text-gray-700">
+        {{ Auth::user()->name ?? 'Admin User' }}
+    </p>
+    <p class="text-xs text-gray-500">
+        Administrator
+    </p>
+</div>
                             <div class="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-300 rounded-full flex items-center justify-center">
                                 <span class="text-white font-bold">A</span>
                             </div>
@@ -229,14 +233,31 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="space-y-1">
+                                                {{-- <div class="space-y-1">
                                                     @foreach($order->items as $item)
                                                         <div class="text-sm text-gray-700 bg-gray-50 px-3 py-1 rounded-lg inline-block mr-1">
                                                             <span class="font-medium">{{ $item['name'] }}</span>
                                                             <span class="text-gray-500">× {{ $item['quantity'] ?? 1 }}</span>
                                                         </div>
                                                     @endforeach
-                                                </div>
+                                                </div> --}}
+                                                <div class="space-y-1">
+    @php
+        // Ensure $order->items is an array
+        $items = is_array($order->items) ? $order->items : json_decode($order->items, true);
+    @endphp
+
+    @if(!empty($items))
+        @foreach($items as $item)
+            <div class="text-sm text-gray-700 bg-gray-50 px-3 py-1 rounded-lg inline-block mr-1">
+                <span class="font-medium">{{ $item['name'] }}</span>
+                <span class="text-gray-500">× {{ $item['quantity'] ?? 1 }}</span>
+            </div>
+        @endforeach
+    @else
+        <span class="text-gray-400">No items</span>
+    @endif
+</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-bold text-green-600 bg-green-50 px-3 py-2 rounded-lg inline-block">
@@ -339,14 +360,22 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4">
-                                                <div class="space-y-1">
+                                                {{-- <div class="space-y-1">
                                                     @foreach($order->items as $item)
                                                         <div class="text-sm text-gray-700 bg-gray-50 px-3 py-1 rounded-lg inline-block mr-1">
                                                             <span class="font-medium">{{ $item['name'] }}</span>
                                                             <span class="text-gray-500">× {{ $item['quantity'] ?? 1 }}</span>
                                                         </div>
                                                     @endforeach
-                                                </div>
+                                                </div> --}}
+                                                <div class="space-y-1">
+    @foreach(json_decode($order->items, true) as $item)
+        <div class="text-sm text-gray-700 bg-gray-50 px-3 py-1 rounded-lg inline-block mr-1">
+            <span class="font-medium">{{ $item['name'] }}</span>
+            <span class="text-gray-500">× {{ $item['quantity'] ?? 1 }}</span>
+        </div>
+    @endforeach
+</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-bold text-green-600 bg-green-50 px-3 py-2 rounded-lg inline-block">

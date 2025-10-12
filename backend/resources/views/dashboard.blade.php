@@ -79,10 +79,18 @@
                             </svg>
                         </button>
                         <div class="flex items-center space-x-3">
-                            <div class="text-right">
+                            {{-- <div class="text-right">
                                 <p class="text-sm font-semibold text-gray-700">Admin User</p>
                                 <p class="text-xs text-gray-500">Administrator</p>
-                            </div>
+                            </div> --}}
+                            <div class="text-right">
+    <p class="text-sm font-semibold text-gray-700">
+        {{ Auth::user()->name ?? 'Admin User' }}
+    </p>
+    <p class="text-xs text-gray-500">
+        Administrator
+    </p>
+</div>
                             <div class="w-10 h-10 bg-gradient-to-r from-blue-400 to-cyan-300 rounded-full flex items-center justify-center">
                                 <span class="text-white font-bold">A</span>
                             </div>

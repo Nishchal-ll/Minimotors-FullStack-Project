@@ -30,9 +30,9 @@ Route::get('admin/login', [AuthController::class,'showLogin'])->name('show.login
 Route::post('admin/register', [AuthController::class,'register'])->name('register');
 Route::post('admin/login', [AuthController::class,'login'])->name('login');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware('auth')->name('dashboard');
 
 
 Route::post('/logout', function (Request $request) {
@@ -45,10 +45,13 @@ Route::post('/logout', function (Request $request) {
 })->name('logout');
 
 // Route::get('/dashboard', [ItemController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [ItemController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/dashboard', [App\Http\Controllers\AuthController::class, 'index'])->name('dashboard');
+// });
 
 Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
 Route::post('/items', [ItemController::class, 'store'])->name('items.store');
