@@ -35,4 +35,12 @@ class OrderController extends Controller
             'order' => $order
         ]);
     }
+public function markAsComplete($id)
+{
+    $order = Order::findOrFail($id);
+    $order->status = 'completed';
+    $order->save();
+
+    return redirect()->back()->with('success', 'Order marked as completed!');
+}
 }

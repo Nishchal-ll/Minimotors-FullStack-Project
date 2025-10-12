@@ -170,6 +170,13 @@ const Checkout = () => {
     navigate('/');
   };
 
+  const handleBackButton = () => {
+    
+      clearCart();
+      navigate('/');
+    
+  };
+
   if (cartItems.length === 0)
     return (
       <>
@@ -202,6 +209,17 @@ const Checkout = () => {
       
       <div className="min-h-screen bg-white py-12 px-4 mt-24">
         <div className="max-w-6xl mx-auto">
+          {/* Back Button */}
+          <button
+            onClick={handleBackButton}
+            className="mb-6 flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition duration-200 group"
+          >
+            <svg className="w-5 h-5 transform group-hover:-translate-x-1 transition duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            <span className="font-semibold">Back to Home</span>
+          </button>
+
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 mb-3">

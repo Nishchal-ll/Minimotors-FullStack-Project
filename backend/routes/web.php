@@ -51,7 +51,7 @@ Route::put('/items/{id}', [ItemController::class, 'update'])->name('items.update
 Route::delete('/items/{id}', [ItemController::class, 'destroy'])->name('items.destroy');
 
 Route::get('api/items', [ItemController::class, 'apiIndex']);
-
-Route::get('/admin/orders', [App\Http\Controllers\OrderController::class, 'adminIndex']);
-    //  ->middleware('auth:admin');
-
+Route::get('/admin/orders', [App\Http\Controllers\OrderController::class, 'adminIndex'])
+    ->name('admin.orders');
+Route::post('/admin/orders/{id}/complete', [App\Http\Controllers\OrderController::class, 'markAsComplete'])
+    ->name('orders.complete');

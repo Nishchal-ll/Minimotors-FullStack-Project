@@ -16,6 +16,7 @@ return new class extends Migration
         $table->text('address');
         $table->json('items'); // store cart items
         $table->decimal('total', 10, 2);
+         $table->string('status')->default('pending');
         $table->timestamps();
     });
 }

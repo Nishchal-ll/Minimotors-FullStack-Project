@@ -148,7 +148,7 @@
                                         placeholder="0.00"
                                     >
                                 </div>
-                                <p class="text-xs text-gray-500 mt-1">Enter the price in US dollars</p>
+                                <p class="text-xs text-gray-500 mt-1">Enter the price in Nrs</p>
                             </div>
 
                             <!-- Image Upload Field -->

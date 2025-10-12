@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -40,7 +40,7 @@
         <span class="font-medium">Dashboard</span>
     </a>
 
-    <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-blue-500 transition duration-200 text-white">
+    <a href="{{ route('admin.orders') }}" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-blue-500 transition duration-200 text-white">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
         </svg>
@@ -197,94 +197,5 @@
 </body>
 </html>
 
-                                    --}}
+                                 
 
-                                    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders - MiniMotors</title>
-    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50">
-    <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-gradient-to-b from-slate-900 to-blue-900 text-white flex-shrink-0">
-            <div class="p-6">
-                <div class="flex items-center space-x-3 mb-8">
-                    <div class="bg-gradient-to-r from-blue-400 to-cyan-300 p-2 rounded-lg">
-                        <span class="text-white font-bold text-xl">M</span>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold">MiniMotors</h1>
-                        <p class="text-xs text-blue-300">Admin Panel</p>
-                    </div>
-                </div>
-                <!-- Navigation -->
-                <nav class="space-y-2">
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-blue-500 transition duration-200 text-white">
-                        <span class="font-medium">Dashboard</span>
-                    </a>
-                    <a href="{}" class="flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-600 text-white transition duration-200">
-                        <span class="font-medium">Orders</span>
-                    </a>
-                </nav>
-            </div>
-            <div class="absolute bottom-0 w-64 p-6">
-                <form action="{{route('logout')}}" method="POST">
-                    @csrf
-                    <button type="submit" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-red-600 transition duration-200 w-full">
-                        <span class="font-medium">Logout</span>
-                    </button>
-                </form>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <div class="flex-1 overflow-auto p-8">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Orders</h1>
-
-            @if($orders->isEmpty())
-                <p class="text-gray-500">No orders placed yet.</p>
-            @else
-                <div class="overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-200">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Customer</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Phone</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Address</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Items</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Total</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($orders as $order)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $order->id }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-800">{{ $order->name }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-800">{{ $order->email }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-800">{{ $order->phone }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-800">{{ $order->address }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-800">
-                                        @foreach($order->items as $item)
-                                            <div>{{ $item['name'] }} x {{ $item['quantity'] ?? 1 }}</div>
-                                        @endforeach
-                                    </td>
-                                    <td class="px-6 py-4 text-sm font-bold text-gray-900">{{ $order->total }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-500">{{ $order->created_at->format('d M, Y H:i') }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-        </div>
-    </div>
-</body>
-</html>
