@@ -1,18 +1,18 @@
 [
   {
-    "name": "Muscle Cars",
-    "image": "src/assets/car.png"
+    "name": "Jeep",
+    "image": "src/assets/jeep.png"
   },
   {
-    "name": "Sports Cars",
-    "image": "src/assets/car.png"
+    "name": "Van",
+    "image": "src/assets/van1.png"
   },
   {
-    "name": "Off-Road",
-    "image": "src/assets/car.png"
+    "name": "Car",
+    "image": "src/assets/car1.png"
   },
   {
-    "name": "Classics",
-    "image": "src/assets/car.png"
+    "name": "Truck",
+    "image": "src/assets/truck.png"
   }
 ]
