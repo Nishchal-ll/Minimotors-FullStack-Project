@@ -53,12 +53,38 @@ class OrderController extends Controller
     }
 
     // Mark order as completed
-    public function markAsComplete($id)
-    {
-        $order = Order::findOrFail($id);
-        $order->status = 'completed';
-        $order->save();
+    // public function markAsComplete($id)
+    // {
+    //     $order = Order::findOrFail($id);
+    //     $order->status = 'completed';
+    //     $order->save();
 
-        return redirect()->back()->with('success', 'Order marked as completed!');
-    }
+    //     return redirect()->back()->with('success', 'Order marked as completed!');
+    // }
+    public function process($id)
+{
+    $order = Order::findOrFail($id);
+    $order->status = 'processed';
+    $order->save();
+
+    return redirect()->back()->with('success', 'Order marked as processed!');
+}
+
+public function deliver($id)
+{
+    $order = Order::findOrFail($id);
+    $order->status = 'delivered';
+    $order->save();
+
+    return redirect()->back()->with('success', 'Order marked as delivered!');
+}
+
+public function refund($id)
+{
+    $order = Order::findOrFail($id);
+    $order->status = 'refunded';
+    $order->save();
+
+    return redirect()->back()->with('success', 'Order marked as refunded!');
+}
 }

@@ -62,8 +62,11 @@ Route::delete('/items/{id}', [ItemController::class, 'destroy'])->name('items.de
 Route::get('api/items', [ItemController::class, 'apiIndex']);
 Route::get('/orders', [App\Http\Controllers\OrderController::class, 'adminIndex'])
     ->name('admin.orders');
-Route::post('/orders/{id}/complete', [App\Http\Controllers\OrderController::class, 'markAsComplete'])
-    ->name('orders.complete');
+// Route::post('/orders/{id}/complete', [App\Http\Controllers\OrderController::class, 'markAsComplete'])
+//     ->name('orders.complete');
+Route::post('/orders/{id}/process', [OrderController::class, 'process'])->name('orders.process');
+Route::post('/orders/{id}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');
+Route::post('/orders/{id}/refund', [OrderController::class, 'refund'])->name('orders.refund');
 
 Route::get('auth/google', [App\Http\Controllers\Admin\Auth\GoogleController::class, 'redirectToGoogle'])->name('admin.google.redirect');
 Route::get('auth/google/callback', [App\Http\Controllers\Admin\Auth\GoogleController::class, 'handleGoogleCallback'])->name('admin.google.callback');
