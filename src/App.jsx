@@ -6,12 +6,14 @@ import About from './components/AboutMainPage/About'
 import Contact from './components/ContactMainPage/Contact'
 import Shop from './components/ShopPageMain/Shop'
 import Checkout from "./components/Checkout/Checkout";
+import Login from "./components/Login/Login";
 
 function App() {
   return (
     <CartProvider>
     <Router>
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Homepage />} />
        <Route path="/about" element={<About />} />
        <Route path="/contact" element={<Contact />} />

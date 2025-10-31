@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import logo from '../../assets/logo.png';
-import { FaShoppingCart, FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
+import { FaShoppingCart, FaUserCircle, FaBars, FaTimes,FaSignInAlt } from 'react-icons/fa';
 import { Link,useNavigate } from 'react-router-dom';
 import {useCart} from '../CartContext/CartContext';
 
@@ -10,7 +10,7 @@ function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showCart, setShowCart] = useState(false);
-  
+  const [open, setOpen] = useState(false); // starts closed
   
   const { cartItems, getCartCount, removeFromCart, updateQuantity, getCartTotal } = useCart();
   
@@ -153,7 +153,7 @@ function Navbar() {
                             </div>
  <button
       onClick={handleCheckout}
-      className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold"
+      className="w-full bg-blue-600 text-white py-4 rounded-lg hover:bg-blue-700 transition font-semibold"
     >
       Checkout
     </button>
@@ -165,14 +165,57 @@ function Navbar() {
                 )}
  </div>
 
-<div
+{/* <div
   className="flex items-center space-x-2 cursor-pointer hover:text-blue-600 transition duration-200"
   onClick={() => window.open('http://127.0.0.1:8000/', '_blank')}
   title="Open Admin Panel"
 >
   <FaUserCircle />
   <span className="text-sm">Admin Login</span>
-</div>
+</div>  */}
+<div className="relative">
+      <div
+        className="flex items-center space-x-2 cursor-pointer hover:text-blue-600 transition duration-200"
+        onClick={() => setOpen(!open)} // toggle dropdown
+      >
+        <FaUserCircle  />
+       
+      </div>
+
+      {/* Dropdown – only renders when open === true */}
+      {open && (
+        <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-50">
+          <button
+            onClick={() => {
+              window.open('http://localhost:5173/login', '_self');
+              setOpen(false);
+            }}
+            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            User Login
+          </button>
+          <button
+            onClick={() => {
+              window.open('http://127.0.0.1:8000/', '_blank');
+              setOpen(false);
+            }}
+            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Admin Login
+          </button>
+        </div>
+      )}
+
+      {/* Click outside to close */}
+      {open && (
+        <div
+          className="fixed inset-0"
+          onClick={() => setOpen(false)}
+        />
+      )}
+    </div>
+
+  
 
 </div>
    
