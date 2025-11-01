@@ -1,25 +1,31 @@
-# 🛍️ MiniMotors — Full-Stack E-Commerce Platform
+# 🏎️ MiniMotors — Hot Wheels E-Commerce Platform
 
-MiniMotors is a **full-stack e-commerce web application** built using **Laravel (Backend API)** and **React (Frontend)**.  
-It allows users to browse products, add to cart, checkout with Stripe demo payments, and receive order confirmation via email.  
-Admins can manage orders, mark them as completed, and log in via Google Authentication.
+**MiniMotors** is a full-stack **e-commerce web application** built with **React (Frontend)** and **Laravel (Backend API)**.  
+It’s designed for Hot Wheels car lovers to browse, order, and track their favorite collectibles.  
+Admins can manage products, process orders, and update their delivery status — all from a clean dashboard.
 
 ---
 
 ## 🚀 Features
 
 ### 🧾 User Features
-- Browse and search products
-- Add products to cart
-- Checkout and place orders
-- Stripe test payment gateway
-- Email confirmation after order
+- 🛒 **User Registration & Login** (Email-based system)
+- 🔍 **Browse Products** by category
+- 🧺 **Add to Cart** and manage cart items
+- 💳 **Checkout via Stripe (Test Mode)**
+- 📦 **Order Tracking** — view order status (*Pending*, *Processed*, *Delivered*, *Refunded*)
+- 📨 **Order Confirmation Email** after successful purchase
+- 👤 **Personal Dashboard** — view all past orders
 
-### 🛠️ Admin Features
-- Secure admin login (with Google Auth)
-- Dashboard for viewing orders
-- Mark orders as *Completed* or *Pending*
-- Manage products and users
+---
+
+### 🧰 Admin Features
+- 🔐 **Secure Admin Login Panel**
+- 🧮 **View & Manage All Orders**
+- ⚙️ **Update Order Status** (*Pending → Processed → Delivered / Refunded*)
+- 🧾 **View User Info & Purchase Details**
+- 🧱 **Add / Edit / Delete Products**
+- 📊 **View Product List and Total Orders**
 
 ---
 
@@ -27,13 +33,10 @@ Admins can manage orders, mark them as completed, and log in via Google Authenti
 
 | Layer | Technology |
 |-------|-------------|
-| **Frontend** | React, Tailwind CSS, Axios |
-| **Backend** | Laravel 10, RESTful API |
+| **Frontend** | React, React Router, Axios, Tailwind CSS |
+| **Backend** | Laravel 10 (RESTful API) |
 | **Database** | MySQL |
 | **Payment Gateway** | Stripe (Test Mode) |
-| **Authentication** | Laravel Socialite (Google Login) |
-| **Mail System** | Gmail SMTP |
-| **Storage** | Laravel File Storage (images) |
-
----
-
+| **Authentication** | Email Login (LocalStorage based) |
+| **Mail System** | Laravel Mail (SMTP) |
+| **Image Storage** | Laravel File Storage (Public Disk) |
