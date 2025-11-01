@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\KhaltiController;
 use App\Http\Controllers\UserCheckoutController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,3 +38,8 @@ Route::post('/client/login', [ClientController::class, 'login']);
 Route::get('/orders', [OrderController::class, 'getOrdersByEmail']);
 
 Route::post('/client/register', [ClientController::class, 'register']);
+
+Route::post('/cart/clear', function (Request $request) {
+    \App\Models\Cart::where('email', $request->email)->delete();
+    return response()->json(['message' => 'Cart cleared']);
+});

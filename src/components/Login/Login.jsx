@@ -1,43 +1,6 @@
-// import React, { useState } from 'react';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
-
-// const Login = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const navigate = useNavigate();
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const res = await axios.post('http://127.0.0.1:8000/api/client/login', { email, password });
-//       console.log('Full response:', res);
-
-//       if (res.data.client) {
-//         localStorage.setItem('user', res.data.client.email);
-//         navigate('/dashboard');
-//       } else {
-//         alert(res.data.message || 'Invalid credentials');
-//       }
-//     } catch (err) {
-//       console.error('Login error:', err.response?.data || err.message);
-//       alert('Login failed');
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleLogin}>
-//       <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} /><br/>
-//       <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} /><br/>
-//       <button type="submit">Login</button>
-//     </form>
-//   );
-// };
-
-// export default Login;
 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
@@ -51,6 +14,14 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+  const user = localStorage.getItem('user');
+  if (user) {
+    navigate('/dashboard');
+  }
+}, []);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();

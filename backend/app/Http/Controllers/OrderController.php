@@ -53,15 +53,6 @@ class OrderController extends Controller
         ]);
     }
 
-    // Mark order as completed
-    // public function markAsComplete($id)
-    // {
-    //     $order = Order::findOrFail($id);
-    //     $order->status = 'completed';
-    //     $order->save();
-
-    //     return redirect()->back()->with('success', 'Order marked as completed!');
-    // }
     public function process($id)
 {
     $order = Order::findOrFail($id);
@@ -88,24 +79,6 @@ public function refund($id)
 
     return redirect()->back()->with('success', 'Order marked as refunded!');
 }
-
-// public function getOrdersByEmail(Request $request)
-// {
-//     $email = $request->query('email'); // get email from query parameter
-
-//     if (!$email) {
-//         return response()->json([
-//             'message' => 'Email is required',
-//             'orders' => []
-//         ], 400);
-//     }
-
-//     $orders = \DB::table('orders')->where('email', $email)->get();
-
-//     return response()->json([
-//         'orders' => $orders
-//     ]);
-// }
 
 public function getOrdersByEmail(Request $request)
 {

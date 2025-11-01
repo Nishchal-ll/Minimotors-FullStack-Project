@@ -10,13 +10,27 @@ import Login from "./components/Login/Login";
 import Dashboard from "./components/Login/Dashboard";
 import Register from "./components/Login/Register";
 
+const ProtectedRoute = ({ children }) => {
+  const user = localStorage.getItem('user');
+  return user ? children : <Navigate to="/login" />;
+};
+
 function App() {
   return (
     <CartProvider>
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+
+           <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Homepage />} />
        <Route path="/about" element={<About />} />
