@@ -7,6 +7,8 @@ import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
+
+
 // Load Stripe (replace with your Stripe test publishable key)
 const stripePromise = loadStripe("pk_test_51SH39RLWdQk50GWCjcVzWTk4lpB2e2mcrvzgM4bZAeSKrJyU0iqiVfBxh8mIGZqyW8xmPca4o3wBG0hQC1DdIwSN00a2ZoPMzr");
 
@@ -23,6 +25,7 @@ const StripeCheckoutForm = ({ order, onSuccess }) => {
 
     try {
       // For demo, we just create a PaymentMethod
+      await axios.post("http://127.0.0.1:8000/api/checkout/client", order);
       const { error, paymentMethod } = await stripe.createPaymentMethod({
         type: "card",
         card: elements.getElement(CardElement),
@@ -38,6 +41,7 @@ const StripeCheckoutForm = ({ order, onSuccess }) => {
         // Save order to backend
         const res = await axios.post("http://127.0.0.1:8000/api/orders", order);
         console.log("Order saved:", res.data);
+
 
         onSuccess(); // Show success modal
         setLoading(false);
@@ -151,6 +155,18 @@ const Checkout = () => {
 
   const handleInputChange = (e) =>
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+
+    const handleCheckout = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/checkout/client", userInfo);
+      console.log("✅ Client info saved:", response.data);
+      alert("Client info saved successfully!");
+    } catch (error) {
+      console.error("❌ Error saving client info:", error);
+      alert("Failed to save client info.");
+    }
+  };
 
   const order = {
     name: userInfo.name,
@@ -306,7 +322,9 @@ const Checkout = () => {
             </div>
 
             {/* User Information & Payment */}
+            
             <div className="space-y-6">
+            
               <div className="bg-gray-50 rounded-2xl shadow-xl p-6 border border-gray-200">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">Shipping Information</h2>
                 <div className="space-y-4">
@@ -372,6 +390,7 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
+            
 
               {/* Payment Section */}
               <div className="bg-gray-50 rounded-2xl shadow-xl p-6 border border-gray-200">

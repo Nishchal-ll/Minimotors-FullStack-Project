@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\KhaltiController;
+use App\Http\Controllers\UserCheckoutController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,3 +25,6 @@ Route::get('/orders', [OrderController::class, 'index']); // for admin dashboard
 
 Route::post('/khalti/initiate', [KhaltiController::class, 'initiate']);
 Route::post('/khalti/verify', [KhaltiController::class, 'verify']);
+
+
+Route::post('/checkout/client', [UserCheckoutController::class, 'store']);
