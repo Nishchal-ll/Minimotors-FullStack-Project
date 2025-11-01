@@ -40,3 +40,7 @@ Admins can manage products, process orders, and update their delivery status —
 | **Authentication** | Email Login (LocalStorage based) |
 | **Mail System** | Laravel Mail (SMTP) |
 | **Image Storage** | Laravel File Storage (Public Disk) |
+
+
+
+
