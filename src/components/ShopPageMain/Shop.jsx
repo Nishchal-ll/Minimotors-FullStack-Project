@@ -1,239 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { FaShoppingCart, FaSortAlphaDown, FaSortAlphaUp } from 'react-icons/fa';
-// import { BsBagCheckFill } from 'react-icons/bs';
-// import { MdAttachMoney } from 'react-icons/md';
-// import Navbar from '../Navbar/Navbar';
-// import Footer from '../Footer/Footer';
-// import { useCart } from '../CartContext/CartContext';
-// import axios from 'axios';
-// import { useNavigate } from "react-router-dom";
-
-// export default function ShopPage() {
-//   const navigate = useNavigate();
-//   const [searchTerm, setSearchTerm] = useState('');
-//   const [selectedCategory, setSelectedCategory] = useState('All');
-//   const [sortBy, setSortBy] = useState('default');
-//   const [priceRange, setPriceRange] = useState('all');
-//   const [products, setProducts] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   const { addToCart } = useCart();
-
-//   useEffect(() => {
-//     axios
-//       .get('http://127.0.0.1:8000/api/items')
-//       .then((response) => {
-//         setProducts(response.data);
-//         setLoading(false);
-//       })
-//       .catch((error) => {
-//         console.error('Error fetching products:', error);
-//         setLoading(false);
-//       });
-//   }, []);
-
-//   const categories = ['All', ...new Set(products.map((car) => car.category || 'Other'))];
-
-//   // Filter and sort products
-//   const filteredProducts = products
-//     .filter((car) => {
-//       const matchesCategory = selectedCategory === 'All' || car.category === selectedCategory;
-//       const matchesSearch = car.name.toLowerCase().includes(searchTerm.toLowerCase());
-      
-//       // Price range filter
-//       let matchesPrice = true;
-//       if (priceRange === 'under2.5k') matchesPrice = car.price < 2500;
-//       else if (priceRange === '2.5k-5k') matchesPrice = car.price >= 2500 && car.price <= 5000;
-//       else if (priceRange === 'over5k') matchesPrice = car.price > 5000;
-      
-//       return matchesCategory && matchesSearch && matchesPrice;
-//     })
-//     .sort((a, b) => {
-//       switch (sortBy) {
-//         case 'name-asc':
-//           return a.name.localeCompare(b.name);
-//         case 'name-desc':
-//           return b.name.localeCompare(a.name);
-//         case 'price-asc':
-//           return a.price - b.price;
-//         case 'price-desc':
-//           return b.price - a.price;
-//         default:
-//           return 0;
-//       }
-//     });
-
-//   const handleAddToCart = (car) => {
-//     const itemWithFullImage = {
-//       ...car,
-//       image: `http://127.0.0.1:8000/storage/${car.image}`,
-//     };
-//     console.log("Adding to cart:", itemWithFullImage);
-//     addToCart(itemWithFullImage);
-//   };
-
-//   const handleBuyNow = (item) => {
-//     addToCart(item);
-//     navigate("/checkout", { state: { item } });
-//   };
-
-//   if (loading) {
-//     return (
-//       <>
-//         <Navbar />
-//         <div className="text-center py-20 text-xl">Loading products...</div>
-//         <Footer />
-//       </>
-//     );
-//   }
-
-//   return (
-//     <>
-//       <Navbar />
-//       <div className="bg-white min-h-screen mt-30">
-//         <div className="max-w-screen-2xl mx-auto px-4 py-10">
-//           <h2 className="text-4xl sm:text-6xl font-extrabold text-center mb-10">
-//             Our Products
-//           </h2>
-
-//           {/* Filters Section */}
-//           <div className="bg-gray-50 rounded-lg shadow-md p-6 mb-10">
-//             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-//               {/* Search */}
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-//                   Search for an item:
-//                 </label>
-//                 <input
-//                   type="text"
-//                   placeholder="e.g. Mustang"
-//                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-//                   value={searchTerm}
-//                   onChange={(e) => setSearchTerm(e.target.value)}
-//                 />
-//               </div>
-
-//               {/* Sort by Name */}
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-//                   <FaSortAlphaDown className="text-blue-600" />
-//                   Sort by Name:
-//                 </label>
-//                 <select
-//                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-//                   value={sortBy}
-//                   onChange={(e) => setSortBy(e.target.value)}
-//                 >
-//                   <option value="default">Default</option>
-//                   <option value="name-asc">Name: A to Z</option>
-//                   <option value="name-desc">Name: Z to A</option>
-//                   <option value="price-asc">Price: Low to High</option>
-//                   <option value="price-desc">Price: High to Low</option>
-//                 </select>
-//               </div>
-
-//               {/* Price Range Filter */}
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-//                   <MdAttachMoney className="text-green-600" />
-//                   Price Range:
-//                 </label>
-//                 <select
-//                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-//                   value={priceRange}
-//                   onChange={(e) => setPriceRange(e.target.value)}
-//                 >
-//                   <option value="all">All Prices</option>
-//                   <option value="under25k">Under Nrs. 25,000</option>
-//                   <option value="25k-50k">Nrs. 25,000 - 50,000</option>
-//                   <option value="over50k">Over Nrs. 50,000</option>
-//                 </select>
-//               </div>
-
-//               {/* Category Filter */}
-//               <div>
-//                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-//                   Category:
-//                 </label>
-//                 <select
-//                   className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-//                   value={selectedCategory}
-//                   onChange={(e) => setSelectedCategory(e.target.value)}
-//                 >
-//                   {categories.map((cat) => (
-//                     <option key={cat} value={cat}>
-//                       {cat}
-//                     </option>
-//                   ))}
-//                 </select>
-//               </div>
-//             </div>
-
-//             {/* Results Counter */}
-//             <div className="mt-4 pt-4 border-t border-gray-300">
-//               <p className="text-sm text-gray-600">
-//                 Showing <span className="font-semibold text-gray-900">{filteredProducts.length}</span> of{' '}
-//                 <span className="font-semibold text-gray-900">{products.length}</span> products
-//               </p>
-//             </div>
-//           </div>
-
-//           {/* Product Grid */}
-//           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-//             {filteredProducts.length > 0 ? (
-//               filteredProducts.map((car) => (
-//                 <div
-//                   key={car.id}
-//                   className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 overflow-hidden h-96 flex flex-col justify-between"
-//                 >
-//                   <div className="h-40 mt-10 overflow-hidden flex justify-center items-center">
-//                     <img
-//                       src={`http://127.0.0.1:8000/storage/${car.image}`}
-//                       alt={car.name}
-//                       className="h-48 object-contain"
-//                     />
-//                   </div>
-//                   <div className="flex-1 flex flex-col justify-center px-4">
-//                     <h3 className="mt-4 text-xl font-bold">{car.name}</h3>
-//                     <p className="mt-1 text-lg font-medium text-gray-900">
-//                       Nrs. {car.price}
-//                     </p>
-
-//                     {/* Buttons */}
-//                     <div className="flex flex-col sm:flex-row gap-3 mt-3">
-//                       <button
-//                         type="button"
-//                         onClick={() => handleAddToCart(car)}
-//                         className="inline-flex items-center justify-center px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition cursor-pointer"
-//                       >
-//                         <FaShoppingCart className="h-5 w-5 mr-3" />
-//                         Add to Cart
-//                       </button>
-
-//                       <button
-//                         type="button"
-//                         onClick={() => handleBuyNow(car)}
-//                         className="inline-flex items-center justify-center px-5 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition cursor-pointer"
-//                       >
-//                         <BsBagCheckFill className="h-5 w-5 mr-3" />
-//                         Buy Now
-//                       </button>
-//                     </div>
-//                   </div>
-//                 </div>
-//               ))
-//             ) : (
-//               <div className="col-span-full text-center text-gray-500 text-lg">
-//                 No products found.
-//               </div>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-//       <Footer />
-//     </>
-//   );
-// }
 
 import React, { useState, useEffect } from 'react';
 import { FaShoppingCart, FaSearch, FaSortAlphaDown, FaFilter } from 'react-icons/fa';
@@ -275,9 +39,9 @@ export default function ShopPage() {
       
       // Price range filter
       let matchesPrice = true;
-      if (priceRange === 'under25k') matchesPrice = car.price < 25000;
-      else if (priceRange === '25k-50k') matchesPrice = car.price >= 25000 && car.price <= 50000;
-      else if (priceRange === 'over50k') matchesPrice = car.price > 50000;
+      if (priceRange === 'under1k') matchesPrice = car.price < 1000;
+      else if (priceRange === '1k-2k') matchesPrice = car.price >= 1000 && car.price <= 2000;
+      else if (priceRange === 'over2k') matchesPrice = car.price > 2000;
       
       return matchesSearch && matchesPrice;
     })
@@ -328,7 +92,7 @@ export default function ShopPage() {
   return (
     <>
       <Navbar />
-      <div className="bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen mt-30">
+      <div className=" min-h-screen mt-30">
         <div className="max-w-screen-2xl mx-auto px-4 py-10">
           {/* Header */}
           <div className="text-center mb-12">
@@ -406,34 +170,34 @@ export default function ShopPage() {
                       <input
                         type="radio"
                         name="priceRange"
-                        value="under25k"
-                        checked={priceRange === 'under25k'}
+                        value="under1k"
+                        checked={priceRange === 'under1k'}
                         onChange={(e) => setPriceRange(e.target.value)}
                         className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500"
                       />
-                      <span className="ml-3 text-gray-700 font-medium">Under Nrs. 25,000</span>
+                      <span className="ml-3 text-gray-700 font-medium">Under Nrs. 1000</span>
                     </label>
                     <label className="flex items-center p-3 border-2 border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition">
                       <input
                         type="radio"
                         name="priceRange"
-                        value="25k-50k"
-                        checked={priceRange === '25k-50k'}
+                        value="2k"
+                        checked={priceRange === '2k'}
                         onChange={(e) => setPriceRange(e.target.value)}
                         className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500"
                       />
-                      <span className="ml-3 text-gray-700 font-medium">Nrs. 25,000 - 50,000</span>
+                      <span className="ml-3 text-gray-700 font-medium">Nrs. 1000 - 2000</span>
                     </label>
                     <label className="flex items-center p-3 border-2 border-gray-200 rounded-xl cursor-pointer hover:bg-blue-50 transition">
                       <input
                         type="radio"
                         name="priceRange"
-                        value="over50k"
-                        checked={priceRange === 'over50k'}
+                        value="over2k"
+                        checked={priceRange === 'over2k'}
                         onChange={(e) => setPriceRange(e.target.value)}
                         className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500"
                       />
-                      <span className="ml-3 text-gray-700 font-medium">Over Nrs. 50,000</span>
+                      <span className="ml-3 text-gray-700 font-medium">Over Nrs. 2000</span>
                     </label>
                   </div>
                 </div>
