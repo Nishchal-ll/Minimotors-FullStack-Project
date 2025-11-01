@@ -88,4 +88,44 @@ public function refund($id)
 
     return redirect()->back()->with('success', 'Order marked as refunded!');
 }
+
+// public function getOrdersByEmail(Request $request)
+// {
+//     $email = $request->query('email'); // get email from query parameter
+
+//     if (!$email) {
+//         return response()->json([
+//             'message' => 'Email is required',
+//             'orders' => []
+//         ], 400);
+//     }
+
+//     $orders = \DB::table('orders')->where('email', $email)->get();
+
+//     return response()->json([
+//         'orders' => $orders
+//     ]);
+// }
+
+public function getOrdersByEmail(Request $request)
+{
+    $email = $request->query('email'); // get email from query parameter
+
+    if (!$email) {
+        return response()->json([
+            'message' => 'Email is required',
+            'orders' => []
+        ], 400);
+    }
+
+    // Select only the fields you want to send to frontend
+    $orders = \DB::table('orders')
+        ->where('email', $email)
+        ->select('id', 'items', 'total', 'status', 'created_at') // include status
+        ->get();
+
+    return response()->json([
+        'orders' => $orders
+    ]);
+}
 }

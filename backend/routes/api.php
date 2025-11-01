@@ -30,5 +30,10 @@ Route::post('/khalti/verify', [KhaltiController::class, 'verify']);
 
 Route::post('/checkout/client', [UserCheckoutController::class, 'store']); // save client info in orders
 Route::post('/client/login', [ClientController::class, 'login']);
-Route::get('/client/{id}/orders', [ClientController::class, 'getOrders']);
-Route::get('/client/{clientId}/dashboard', [ClientController::class, 'dashboard']);
+
+// Route::get('/client/{id}/orders', [ClientController::class, 'getOrders']);
+// Route::get('/client/{clientId}/dashboard', [ClientController::class, 'dashboard']);
+
+Route::get('/orders', [OrderController::class, 'getOrdersByEmail']);
+
+Route::post('/client/register', [ClientController::class, 'register']);

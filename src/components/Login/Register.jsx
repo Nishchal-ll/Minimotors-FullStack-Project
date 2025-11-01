@@ -1,37 +1,49 @@
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-export default function Register() {
+const Register = () => {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+    address: ''
+  });
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = e => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  const handleRegister = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://127.0.0.1:8000/api/register", form);
-      localStorage.setItem("token", res.data.token);
-      alert("Registration successful!");
-      navigate("/dashboard");
+      const res = await axios.post('http://127.0.0.1:8000/api/client/register', form);
+      console.log('Register response:', res.data);
+      if (res.data.success) {
+        alert('Registration successful! Please login.');
+        navigate('/login');
+      } else {
+        alert('Registration failed.');
+      }
     } catch (err) {
-      alert("Registration failed!");
+      console.error('Register error:', err.response?.data || err.message);
+      alert('Something went wrong.');
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h2 className="text-2xl font-bold mb-4">User Registration</h2>
-      <form onSubmit={handleRegister} className="flex flex-col gap-3 w-64">
-        <input name="name" placeholder="Full Name" onChange={handleChange} className="border p-2 rounded" />
-        <input name="email" type="email" placeholder="Email" onChange={handleChange} className="border p-2 rounded" />
-        <input name="password" type="password" placeholder="Password" onChange={handleChange} className="border p-2 rounded" />
-        <button className="bg-green-600 text-white p-2 rounded">Register</button>
-      </form>
-      <p className="mt-3 text-sm">
-        Already have an account? <span className="text-blue-600 cursor-pointer" onClick={() => navigate("/login")}>Login</span>
-      </p>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <h2>Register</h2>
+      <input type="text" name="name" placeholder="Name" onChange={handleChange} required /><br/>
+      <input type="email" name="email" placeholder="Email" onChange={handleChange} required /><br/>
+      <input type="password" name="password" placeholder="Password" onChange={handleChange} required /><br/>
+      <input type="text" name="phone" placeholder="Phone" onChange={handleChange} /><br/>
+      <input type="text" name="address" placeholder="Address" onChange={handleChange} /><br/>
+      <button type="submit">Register</button>
+    </form>
   );
-}
+};
+
+export default Register;
