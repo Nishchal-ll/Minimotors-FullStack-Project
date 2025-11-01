@@ -5,7 +5,7 @@ export default function CategoryCards() {
   return (
     <div className="px-6 lg:px-40 py-12 mx-auto cursor-pointer">
 
-      <h2 className="text-center text-5xl sm:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6 mt-10">
+      <h2 className="text-center text-5xl sm:text-6xl lg:text-7xl font-extrabold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6 mt-24">
            Featured Categories
           </h2>
 
