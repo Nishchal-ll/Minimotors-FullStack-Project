@@ -181,7 +181,7 @@ function Navbar() {
                       </button>
                       <button
                         onClick={() => {
-                          navigate('/user-login');
+                          navigate('/login');
                           setShowUserDropdown(false);
                         }}
                         className="w-full text-left px-4 py-3 hover:bg-gray-100 transition duration-200 flex items-center space-x-2"

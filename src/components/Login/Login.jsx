@@ -1,35 +1,61 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // <-- import
 
-export default function Login() {
-  const navigate = useNavigate();
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate(); // <-- initialize
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://127.0.0.1:8000/api/login", { email, password });
-      localStorage.setItem("token", res.data.token);
-      alert("Login successful!");
-      navigate("/dashboard");
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/client/login",
+        { email, password }
+      );
+
+      // Save client to localStorage
+      localStorage.setItem("client", JSON.stringify(response.data.client));
+
+      // Redirect to dashboard
+      navigate("/dashboard"); // <-- redirect here
     } catch (err) {
-      alert("Invalid credentials!");
+      setError("Invalid email or password");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h2 className="text-2xl font-bold mb-4">User Login</h2>
-      <form onSubmit={handleLogin} className="flex flex-col gap-3 w-64">
-        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} className="border p-2 rounded" />
-        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} className="border p-2 rounded" />
-        <button className="bg-blue-600 text-white p-2 rounded">Login</button>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
+      <h2 className="text-2xl font-bold text-center mb-6">Client Login</h2>
+      {error && <p className="text-red-500 mb-3 text-center">{error}</p>}
+      <form onSubmit={handleLogin} className="space-y-4">
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full p-3 border rounded-lg"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full p-3 border rounded-lg"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition"
+        >
+          Login
+        </button>
       </form>
-      <p className="mt-3 text-sm">
-        Don’t have an account? <span className="text-blue-600 cursor-pointer" onClick={() => navigate("/register")}>Register</span>
-      </p>
     </div>
   );
-}
+};
+
+export default Login;
