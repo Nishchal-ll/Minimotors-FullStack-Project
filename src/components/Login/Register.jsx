@@ -246,21 +246,7 @@ const Register = () => {
                 </div>
               </div>
 
-              {/* Terms & Conditions */}
-              <div className="flex items-start">
-                <input
-                  type="checkbox"
-                  required
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-1"
-                />
-                <label className="ml-3 text-sm text-gray-600">
-                  I agree to the{' '}
-                  <Link to="/terms" className="font-semibold text-blue-600 hover:text-blue-700">
-                    Terms & Conditions
-                  </Link>
-                </label>
-              </div>
-
+ 
               {/* Submit Button */}
               <button
                 type="submit"

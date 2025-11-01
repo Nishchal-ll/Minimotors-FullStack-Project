@@ -4,29 +4,6 @@ import Navbar from '../Navbar/Navbar'
 import Footer from '../Footer/Footer'
 
 
-// export default function ContactUs() {
-//   const [formData, setFormData] = useState({
-//     name: '',
-//     email: '',
-//     phone: '',
-//     message: ''
-//   });
-
-//   const handleChange = (e) => {
-//     setFormData({
-//       ...formData,
-//       [e.target.name]: e.target.value
-//     });
-//   };
-
-//   const handleSubmit = () => {
-//     if (formData.name && formData.email && formData.message) {
-//       alert('Thank you for contacting Mini Motors! We\'ll get back to you soon.');
-//       setFormData({ name: '', email: '', phone: '', message: '' });
-//     } else {
-//       alert('Please fill in all required fields.');
-//     }
-//   };
 
   function Contact() {
     return (

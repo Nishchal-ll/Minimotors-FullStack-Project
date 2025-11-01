@@ -1,18 +1,18 @@
 [
   {
-    "name": "Jeep",
-    "image": "src/assets/jeep.png"
-  },
-  {
-    "name": "Van",
-    "image": "src/assets/van1.png"
-  },
-  {
-    "name": "Car",
+    "name": "Mini",
     "image": "src/assets/car1.png"
   },
   {
-    "name": "Truck",
-    "image": "src/assets/truck.png"
+    "name": "Cab",
+    "image": "src/assets/car2.png"
+  },
+  {
+    "name": "Car",
+    "image": "src/assets/car3.png"
+  },
+  {
+    "name": "Hatchback",
+    "image": "src/assets/car4.png"
   }
 ]
