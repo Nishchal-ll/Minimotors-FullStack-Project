@@ -28,6 +28,7 @@ Route::post('/khalti/initiate', [KhaltiController::class, 'initiate']);
 Route::post('/khalti/verify', [KhaltiController::class, 'verify']);
 
 
-Route::post('/checkout/client', [UserCheckoutController::class, 'store']);//client info during checkout
-
+Route::post('/checkout/client', [UserCheckoutController::class, 'store']); // save client info in orders
 Route::post('/client/login', [ClientController::class, 'login']);
+Route::get('/client/{id}/orders', [ClientController::class, 'getOrders']);
+Route::get('/client/{clientId}/dashboard', [ClientController::class, 'dashboard']);

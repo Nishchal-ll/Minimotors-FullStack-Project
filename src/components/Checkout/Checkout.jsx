@@ -25,6 +25,7 @@ const StripeCheckoutForm = ({ order, onSuccess }) => {
 
     try {
       // For demo, we just create a PaymentMethod
+      console.log(order);
       await axios.post("http://127.0.0.1:8000/api/checkout/client", order);
       const { error, paymentMethod } = await stripe.createPaymentMethod({
         type: "card",
@@ -39,8 +40,8 @@ const StripeCheckoutForm = ({ order, onSuccess }) => {
         console.log("Payment success (demo):", paymentMethod);
 
         // Save order to backend
-        const res = await axios.post("http://127.0.0.1:8000/api/orders", order);
-        console.log("Order saved:", res.data);
+        // const res = await axios.post("http://127.0.0.1:8000/api/orders", order);
+        // console.log("Order saved:", res.data);
 
 
         onSuccess(); // Show success modal
@@ -50,6 +51,7 @@ const StripeCheckoutForm = ({ order, onSuccess }) => {
       console.error(err);
       alert("Payment failed!");
       setLoading(false);
+ 
     }
   };
 
@@ -171,11 +173,11 @@ const Checkout = () => {
   const order = {
     name: userInfo.name,
     email: userInfo.email,
+     password: userInfo.password,
     phone: userInfo.phone,
-    password: userInfo.password,
     address: userInfo.address,
-    items: cartItems,
-    total: getCartTotal(),
+   items: cartItems, // ✅ stringify array
+  total: Number(getCartTotal()),
   };
 
   const handleSuccess = () => {

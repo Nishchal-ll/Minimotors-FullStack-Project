@@ -23,6 +23,7 @@ class OrderController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
+            'password' => 'required|min:6',
             'phone' => 'required|string',
             'address' => 'required|string',
             'items' => 'required|array',
