@@ -27,7 +27,7 @@ class ItemController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|integer',
             'image' => 'nullable|image',
-            'description' => 'nullable|string', // ✅ fixed validation rule
+            'description' => 'required|string', // ✅ fixed validation rule
         ]);
 
         if ($request->hasFile('image')) {

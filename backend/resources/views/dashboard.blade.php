@@ -131,70 +131,81 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
-                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Item Details</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Item Name</th>
                                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Price</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</th>
                                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Image</th>
                                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @forelse($items as $item)
-                                    <tr class="hover:bg-gray-50 transition duration-150">
-                                        <td class="px-6 py-4 text-sm font-semibold text-gray-900">#{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}</td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center space-x-3">
-                                               
-                                                <div>
-                                                    <p class="text-sm font-semibold text-gray-900">{{ $item->name }}</p>
-                                                   
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <span class="text-lg font-bold text-gray-900">${{ number_format($item->price, 2) }}</span>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-20 h-20 object-cover rounded-lg border-2 border-gray-200 shadow-sm">
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center space-x-2">
-                                                <a href="{{ route('items.edit', $item->id) }}" class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition duration-150" title="Edit">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                                    </svg>
-                                                </a>
-                                                <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition duration-150" title="Delete">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                        </svg>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="px-6 py-12 text-center">
-                                            <div class="flex flex-col items-center justify-center">
-                                                <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
-                                                </svg>
-                                                <p class="text-gray-500 text-lg font-medium mb-2">No items found</p>
-                                                <p class="text-gray-400 text-sm mb-4">Get started by adding your first item</p>
-                                                <a href="{{ route('items.create') }}" class="bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md transform hover:scale-105 transition duration-300 flex items-center space-x-2">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                                    </svg>
-                                                    <span>Add New Item</span>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
+                           <tbody class="divide-y divide-gray-200">
+    @forelse($items as $item)
+        <tr class="hover:bg-gray-50 transition duration-150">
+            <td class="px-6 py-4 text-sm font-semibold text-gray-900">
+                #{{ str_pad($item->id, 3, '0', STR_PAD_LEFT) }}
+            </td>
+
+            <td class="px-6 py-4">
+                <div class="flex items-center space-x-3">
+                    <div>
+                        <p class="text-sm font-semibold text-gray-900">{{ $item->name }}</p>
+                    </div>
+                </div>
+            </td>
+
+            <td class="px-6 py-4">
+                <span class="text-lg font-bold text-gray-900">${{ number_format($item->price, 2) }}</span>
+            </td>
+
+            <!-- Description column -->
+            <td class="px-6 py-4">
+                <p class="text-sm text-gray-700  font-bold line-clamp-3">{{ $item->description ?? '—' }}</p>
+            </td>
+
+            <td class="px-6 py-4">
+                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-20 h-20 object-cover rounded-lg border-2 border-gray-200 shadow-sm">
+            </td>
+
+            <td class="px-6 py-4">
+                <div class="flex items-center space-x-2">
+                    <a href="{{ route('items.edit', $item->id) }}" class="p-2 text-green-600 hover:bg-green-50 rounded-lg transition duration-150" title="Edit">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                    </a>
+                    <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition duration-150" title="Delete">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="6" class="px-6 py-12 text-center">
+                <div class="flex flex-col items-center justify-center">
+                    <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                    </svg>
+                    <p class="text-gray-500 text-lg font-medium mb-2">No items found</p>
+                    <p class="text-gray-400 text-sm mb-4">Get started by adding your first item</p>
+                    <a href="{{ route('items.create') }}" class="bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md transform hover:scale-105 transition duration-300 flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        <span>Add New Item</span>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    @endforelse
+</tbody>
+
                         </table>
                     </div>
                     </div>

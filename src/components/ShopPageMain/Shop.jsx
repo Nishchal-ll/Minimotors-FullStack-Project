@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { FaShoppingCart, FaSearch, FaSortAlphaDown, FaFilter } from 'react-icons/fa';
+import { FaShoppingCart, FaSearch, FaSortAlphaDown, FaFilter, FaTimes } from 'react-icons/fa';
 import { BsBagCheckFill } from 'react-icons/bs';
 import { MdAttachMoney } from 'react-icons/md';
 import Navbar from '../Navbar/Navbar';
@@ -16,6 +15,7 @@ export default function ShopPage() {
   const [priceRange, setPriceRange] = useState('all');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { addToCart } = useCart();
 
@@ -37,7 +37,6 @@ export default function ShopPage() {
     .filter((car) => {
       const matchesSearch = car.name.toLowerCase().includes(searchTerm.toLowerCase());
       
-      // Price range filter
       let matchesPrice = true;
       if (priceRange === 'under1k') matchesPrice = car.price < 1000;
       else if (priceRange === '1k-2k') matchesPrice = car.price >= 1000 && car.price <= 2000;
@@ -65,13 +64,26 @@ export default function ShopPage() {
       ...car,
       image: `http://127.0.0.1:8000/storage/${car.image}`,
     };
-    console.log("Adding to cart:", itemWithFullImage);
     addToCart(itemWithFullImage);
   };
 
   const handleBuyNow = (item) => {
-    addToCart(item);
-    navigate("/checkout", { state: { item } });
+    const itemWithFullImage = {
+      ...item,
+      image: `http://127.0.0.1:8000/storage/${item.image}`,
+    };
+    addToCart(itemWithFullImage);
+    navigate("/checkout", { state: { item: itemWithFullImage } });
+  };
+
+  const openProductDetail = (product) => {
+    setSelectedProduct(product);
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  };
+
+  const closeProductDetail = () => {
+    setSelectedProduct(null);
+    document.body.style.overflow = 'unset';
   };
 
   if (loading) {
@@ -92,7 +104,7 @@ export default function ShopPage() {
   return (
     <>
       <Navbar />
-      <div className=" min-h-screen mt-30">
+      <div className="min-h-screen mt-30">
         <div className="max-w-screen-2xl mx-auto px-4 py-10">
           {/* Header */}
           <div className="text-center mb-12">
@@ -181,8 +193,8 @@ export default function ShopPage() {
                       <input
                         type="radio"
                         name="priceRange"
-                        value="2k"
-                        checked={priceRange === '2k'}
+                        value="1k-2k"
+                        checked={priceRange === '1k-2k'}
                         onChange={(e) => setPriceRange(e.target.value)}
                         className="w-4 h-4 text-blue-600 focus:ring-2 focus:ring-blue-500"
                       />
@@ -221,7 +233,8 @@ export default function ShopPage() {
                   filteredProducts.map((car) => (
                     <div
                       key={car.id}
-                      className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-100"
+                      className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-gray-100 cursor-pointer"
+                      onClick={() => openProductDetail(car)}
                     >
                       {/* Image Container */}
                       <div className="relative h-56 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
@@ -231,6 +244,9 @@ export default function ShopPage() {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <span className="bg-white text-gray-900 px-4 py-2 rounded-lg font-semibold">View Details</span>
+                        </div>
                       </div>
 
                       {/* Content */}
@@ -238,31 +254,9 @@ export default function ShopPage() {
                         <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
                           {car.name}
                         </h3>
-                        <div className="flex items-center justify-between mb-4">
-                          <p className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                            Nrs. {car.price.toLocaleString()}
-                          </p>
-                        </div>
-
-                        {/* Buttons */}
-                        <div className="flex gap-3">
-                          <button
-                            type="button"
-                            onClick={() => handleBuyNow(car)}
-                            className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all transform hover:-translate-y-0.5"
-                          >
-                            <BsBagCheckFill className="mr-2 text-lg" />
-                            Buy Now
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => handleAddToCart(car)}
-                            className="inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl shadow-lg hover:shadow-xl hover:from-purple-700 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all transform hover:-translate-y-0.5"
-                          >
-                            <FaShoppingCart className="text-xl" />
-                          </button>
-                        </div>
+                        <p className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                          Nrs. {car.price.toLocaleString()}
+                        </p>
                       </div>
                     </div>
                   ))
@@ -292,7 +286,118 @@ export default function ShopPage() {
           </div>
         </div>
       </div>
+
+      {/* Product Detail Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0  bg-opacity-100 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-slideUp">
+            {/* Close Button */}
+            <button
+              onClick={closeProductDetail}
+              className="sticky top-4 float-right mr-6 mt-6 p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition z-10"
+            >
+              <FaTimes className="text-xl" />
+            </button>
+
+            <div className="p-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Product Image */}
+                <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 flex items-center justify-center">
+                  <img
+                    src={`http://127.0.0.1:8000/storage/${selectedProduct.image}`}
+                    alt={selectedProduct.name}
+                    className="max-w-full max-h-96 object-contain"
+                  />
+                </div>
+
+                {/* Product Details */}
+                <div className="flex flex-col">
+                  <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
+                    {selectedProduct.name}
+                  </h2>
+
+                  <div className="mb-6">
+                    <p className="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      Nrs. {selectedProduct.price.toLocaleString()}
+                    </p>
+                  </div>
+
+                  {/* Description */}
+                  <div className="mb-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Description</h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {selectedProduct.description || 'No description available for this product.'}
+                    </p>
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="bg-gray-50 rounded-xl p-4 mb-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Product ID</p>
+                        <p className="text-gray-900 font-bold">#{selectedProduct.id}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">Availability</p>
+                        <p className="text-green-600 font-bold">In Stock</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-4 mt-auto">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBuyNow(selectedProduct);
+                      }}
+                      className="flex-1 inline-flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all"
+                    >
+                      <BsBagCheckFill className="mr-2 text-xl" />
+                      Buy Now
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(selectedProduct);
+                      }}
+                      className="inline-flex items-center justify-center px-6 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-purple-700 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all"
+                    >
+                      <FaShoppingCart className="text-xl" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { 
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to { 
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.2s ease-out;
+        }
+        .animate-slideUp {
+          animation: slideUp 0.3s ease-out;
+        }
+      `}</style>
     </>
   );
 }
