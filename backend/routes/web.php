@@ -24,10 +24,10 @@ Route::get('/', function () {
     return redirect()->route('show.login');
 });
 
-Route::get('admin/register', [AuthController::class,'showRegister'])->name('show.register');
+
 Route::get('admin/login', [AuthController::class,'showLogin'])->name('show.login');
 
-Route::post('admin/register', [AuthController::class,'register'])->name('register');
+
 Route::post('admin/login', [AuthController::class,'login'])->name('login');
 
 // Route::get('/dashboard', function () {

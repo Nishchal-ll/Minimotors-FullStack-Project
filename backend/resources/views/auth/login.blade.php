@@ -264,14 +264,7 @@
                 </form>
 
                 <!-- Register Link -->
-                <div class="mt-6 text-center">
-                    <p class="text-gray-600">
-                        Don't have an account? 
-                        <a href="{{route('show.register')}}" class="text-blue-500 hover:text-blue-600 font-semibold transition duration-200">
-                            Register here
-                        </a>
-                    </p>
-                </div>
+        
             </div>
 
             <!-- Footer -->
