@@ -24,9 +24,10 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'price' => 'required|integer',
             'image' => 'nullable|image',
+            'description' => 'nullable|string', // ✅ fixed validation rule
         ]);
 
         if ($request->hasFile('image')) {
@@ -39,50 +40,52 @@ class ItemController extends Controller
     }
 
     // Show edit form
-   public function edit($id)
-{
-    $item = Item::findOrFail($id);
-    return view('items.edit', compact('item'));
-}
-
-    // Update item
-   public function update(Request $request, $id)
-{
-    $item = Item::findOrFail($id);
-
-    $request->validate([
-        'name' => 'required',
-        'price' => 'required|numeric',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-    ]);
-
-    // if a new image is uploaded
-    if ($request->hasFile('image')) {
-        $path = $request->file('image')->store('images', 'public');
-        $item->image = $path;
+    public function edit($id)
+    {
+        $item = Item::findOrFail($id);
+        return view('items.edit', compact('item'));
     }
 
-    // update other fields
-    $item->name = $request->name;
-    $item->price = $request->price;
+    // Update item
+    public function update(Request $request, $id)
+    {
+        $item = Item::findOrFail($id);
 
-    $item->save();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'description' => 'nullable|string', // ✅ added this
+        ]);
 
-    return redirect()->route('dashboard')->with('success', 'Item updated successfully!');
-}
+        // if a new image is uploaded
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images', 'public');
+            $item->image = $path;
+        }
+
+        // update other fields
+        $item->name = $request->name;
+        $item->price = $request->price;
+        $item->description = $request->description; // ✅ added this
+
+        $item->save();
+
+        return redirect()->route('dashboard')->with('success', 'Item updated successfully!');
+    }
 
     // Delete item
-   public function destroy($id)
-{
-    $item = Item::findOrFail($id);
-    $item->delete();
+    public function destroy($id)
+    {
+        $item = Item::findOrFail($id);
+        $item->delete();
 
-    return redirect()->route('dashboard')->with('success', 'Item deleted successfully!');
-}
+        return redirect()->route('dashboard')->with('success', 'Item deleted successfully!');
+    }
 
-public function apiIndex()
-{
-    return response()->json(Item::all());
-}
-
+    // API for frontend (React)
+    public function apiIndex()
+    {
+        return response()->json(Item::all());
+    }
 }
