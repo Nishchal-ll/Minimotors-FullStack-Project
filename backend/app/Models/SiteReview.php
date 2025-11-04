@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class SiteReview extends Model
+{
+    protected $fillable = ['user_id', 'name', 'email', 'review', 'rating'];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+}

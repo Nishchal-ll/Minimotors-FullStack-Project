@@ -7,6 +7,7 @@ use App\Http\Controllers\KhaltiController;
 use App\Http\Controllers\UserCheckoutController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\SiteReviewController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,3 +45,6 @@ Route::post('/cart/clear', function (Request $request) {
     return response()->json(['message' => 'Cart cleared']);
 });
 
+
+Route::post('/site-reviews', [SiteReviewController::class, 'store']);
+Route::get('/site-reviews', [SiteReviewController::class, 'index']);
