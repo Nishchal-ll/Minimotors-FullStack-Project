@@ -10,6 +10,7 @@ import Login from "./components/Login/Login";
 import Dashboard from "./components/Login/Dashboard";
 import Register from "./components/Login/Register";
 
+
 const ProtectedRoute = ({ children }) => {
   const user = localStorage.getItem('user');
   return user ? children : <Navigate to="/login" />;
@@ -37,6 +38,7 @@ function App() {
        <Route path="/contact" element={<Contact />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/checkout" element={<Checkout />} /> 
+       
       </Routes>
     </Router>
     </CartProvider>

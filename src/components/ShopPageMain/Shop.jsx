@@ -359,6 +359,7 @@ export default function ShopPage() {
 
                     <button
                       onClick={(e) => {
+                        
                         e.stopPropagation();
                         handleAddToCart(selectedProduct);
                       }}

@@ -13,25 +13,19 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-gradient-to-b from-slate-900 to-blue-900 text-white flex-shrink-0">
             <div class="p-6">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3 mb-8">
+         
+                    <div class="flex items-center space-x-3 mb-8">
                     <div class="bg-gradient-to-r from-blue-400 to-cyan-300 p-2 rounded-lg">
-                       <svg class="w-12 h-12 text-white" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-  <rect width="48" height="48" fill="currentColor" rx="8" ry="8" opacity="0.2"/>
-  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-        font-size="24" font-family="Arial, sans-serif" font-weight="bold" fill="currentColor">
-    M
-  </text>
-</svg>
-
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
                     </div>
                     <div>
                         <h1 class="text-xl font-bold">MiniMotors</h1>
                         <p class="text-xs text-blue-300">Admin Panel</p>
                     </div>
                 </div>
-
-                <!-- Navigation -->
+                  
           <nav class="space-y-2">
     <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-600 text-white transition duration-200">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -43,3 +43,4 @@ Route::post('/cart/clear', function (Request $request) {
     \App\Models\Cart::where('email', $request->email)->delete();
     return response()->json(['message' => 'Cart cleared']);
 });
+
