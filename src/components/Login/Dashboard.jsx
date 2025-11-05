@@ -20,6 +20,8 @@ const Dashboard = () => {
   const [rating, setRating] = useState(5);
   const [submittingReview, setSubmittingReview] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+const [showReviewModal, setShowReviewModal] = useState(false);
+
 
   const userEmail = localStorage.getItem("user");
 
@@ -158,6 +160,17 @@ const Dashboard = () => {
             </div>
           </div>
 
+        {/*review button*/}
+          <div className="mb-8 text-right">
+  <button
+    onClick={() => setShowReviewModal(true)}
+    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all shadow-lg"
+  >
+    <FaStar className="mr-2" />
+    Submit a Review
+  </button>
+</div>
+
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div className="bg-white rounded-xl shadow-md border border-gray-200 p-6">
@@ -282,6 +295,7 @@ const Dashboard = () => {
                 )}
               </div>
             </div>
+            
 
             {/* Orders Section - Right Side */}
             <div className="lg:col-span-2">
@@ -372,98 +386,110 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Review Submission Section */}
-          <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl shadow-2xl p-8 md:p-12 border-2 border-blue-100 mt-12">
-            <div className="max-w-3xl mx-auto">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
-                  <FaHeart className="text-white text-2xl" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900">Share Your Experience</h2>
-                  <p className="text-gray-600 mt-1">We value your feedback to improve your shopping experience</p>
-                </div>
-              </div>
+{/* Review Form Modal */}
+{showReviewModal && (
+  <div className="fixed inset-0  bg-opacity-100 z-50 flex items-center justify-center p-4">
+    <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 relative animate-scale-in">
+      
+      {/* Close Button */}
+      <button
+        onClick={() => setShowReviewModal(false)}
+        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
+      >
+        &times;
+      </button>
 
-              <form onSubmit={handleSubmitReview} className="mt-8">
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Your Name *</label>
-                    <input
-                      type="text"
-                      placeholder="Enter your name"
-                      value={reviewName}
-                      onChange={(e) => setReviewName(e.target.value)}
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition bg-white"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Your Email *</label>
-                    <input
-                      type="email"
-                      placeholder="your@email.com"
-                      value={reviewEmail}
-                      onChange={(e) => setReviewEmail(e.target.value)}
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition bg-gray-100"
-                      readOnly
-                    />
-                  </div>
-                </div>
+      {/* Modal Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+          <FaHeart className="text-white text-2xl" />
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Share Your Experience</h2>
+          <p className="text-gray-600 text-sm">We value your feedback to improve Mini Motors</p>
+        </div>
+      </div>
 
-                <div className="mb-6">
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Your Review *</label>
-                  <textarea
-                    placeholder="Tell us about your experience with Mini Motors..."
-                    value={reviewText}
-                    onChange={(e) => setReviewText(e.target.value)}
-                    required
-                    rows="5"
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition resize-none bg-white"
-                  />
-                </div>
-
-                <div className="mb-8">
-                  <label className="block text-sm font-bold text-gray-700 mb-3">Rating *</label>
-                  <div className="flex items-center gap-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        key={star}
-                        type="button"
-                        onClick={() => setRating(star)}
-                        className={`text-4xl transition-all transform hover:scale-110 ${
-                          star <= rating ? 'text-yellow-400' : 'text-gray-300'
-                        }`}
-                      >
-                        <FaStar />
-                      </button>
-                    ))}
-                    <span className="ml-4 text-gray-700 font-semibold text-lg">
-                      {rating} star{rating !== 1 ? 's' : ''}
-                    </span>
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submittingReview}
-                  className={`w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all shadow-lg hover:shadow-xl ${
-                    submittingReview ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                >
-                  {submittingReview ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      Submitting...
-                    </span>
-                  ) : (
-                    'Submit Review'
-                  )}
-                </button>
-              </form>
-            </div>
+      {/* Review Form */}
+      <form onSubmit={handleSubmitReview}>
+        <div className="grid grid-cols-1 gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-1">Your Name *</label>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={reviewName}
+              onChange={(e) => setReviewName(e.target.value)}
+              required
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition bg-white"
+            />
           </div>
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-1">Your Email *</label>
+            <input
+              type="email"
+              value={reviewEmail}
+              readOnly
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-100 text-gray-600"
+            />
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-bold text-gray-700 mb-1">Your Review *</label>
+          <textarea
+            placeholder="Tell us about your experience..."
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            required
+            rows="4"
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition bg-white resize-none"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-bold text-gray-700 mb-2">Rating *</label>
+          <div className="flex items-center gap-2">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                type="button"
+                onClick={() => setRating(star)}
+                className={`text-3xl transition-all transform hover:scale-110 ${
+                  star <= rating ? 'text-yellow-400' : 'text-gray-300'
+                }`}
+              >
+                <FaStar />
+              </button>
+            ))}
+            <span className="ml-2 text-gray-700 font-semibold">{rating} ★</span>
+          </div>
+        </div>
+
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={() => setShowReviewModal(false)}
+            className="w-1/2 px-6 py-3 border-2 border-gray-300 rounded-xl text-gray-700 font-semibold hover:bg-gray-100 transition"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={submittingReview}
+            className={`w-1/2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-purple-700 transition ${
+              submittingReview ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+          >
+            {submittingReview ? 'Submitting...' : 'Submit'}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
+
+
         </div>
       </div>
       <Footer />
