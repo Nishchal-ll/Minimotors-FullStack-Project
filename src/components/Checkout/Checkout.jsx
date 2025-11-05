@@ -4,11 +4,70 @@ import Footer from "../Footer/Footer";
 import { useCart } from "../CartContext/CartContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ShoppingCart, CreditCard, User, Mail, Lock, Phone, MapPin, Package, ArrowRight, CheckCircle } from "lucide-react";
+
+const SuccessModal = ({ onClose }) => {
+  return (
+    <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 animate-scale-in">
+        <div className="text-center">
+          <div className="mx-auto mb-6 w-20 h-20 bg-green-500 rounded-full flex items-center justify-center animate-bounce-once">
+            <svg
+              className="w-12 h-12 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="3"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-3">
+            Your Order is Placed Successfully!
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Thank you for your purchase. Your order has been confirmed and will
+            be processed shortly.
+          </p>
+          <div className="bg-blue-50 rounded-xl p-4 mb-6">
+            <div className="flex items-center justify-center space-x-2 text-blue-600">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span className="font-semibold">
+                Order confirmation sent to your email
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg transition duration-300"
+          >
+            Continue Shopping
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Checkout = () => {
   const { cartItems, getCartTotal, clearCart } = useCart();
   const navigate = useNavigate();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -24,7 +83,11 @@ const Checkout = () => {
   const handleInputChange = (e) =>
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
 
-  // Save order & user info to backend
+  const handleBackButton = () => {
+    clearCart();
+    navigate("/");
+  };
+
   const handleBackendSave = async () => {
     try {
       const payload = {
@@ -45,13 +108,12 @@ const Checkout = () => {
     }
   };
 
-  // Initiate Khalti payment with dummy data
   const handleKhaltiPay = async () => {
     const backendSaved = await handleBackendSave();
     if (!backendSaved) return;
 
     const dummyOrder = {
-      amount: 1000, // in paisa
+      amount: getCartTotal() * 100, // in paisa
       purchase_order_id: "TEST" + Math.floor(Math.random() * 999999),
       purchase_order_name: "Demo Order",
       return_url: window.location.href,
@@ -68,7 +130,7 @@ const Checkout = () => {
 
       if (data.payment_url) {
         setPidx(data.pidx);
-        window.location.href = data.payment_url; // redirect to Khalti
+        window.location.href = data.payment_url;
       } else {
         alert("Payment initiation failed");
         console.log(data);
@@ -79,7 +141,6 @@ const Checkout = () => {
     }
   };
 
-  // Verify Khalti payment after redirect
   const verifyKhaltiPayment = async () => {
     if (!pidx) return;
     try {
@@ -92,8 +153,8 @@ const Checkout = () => {
       if (data.status === "Completed") {
         alert("✅ Payment successful!");
         setPaymentCompleted(true);
+        setShowSuccessModal(true);
         clearCart();
-        navigate("/"); // redirect after success
       } else {
         alert("❌ Payment not completed");
       }
@@ -106,202 +167,247 @@ const Checkout = () => {
     verifyKhaltiPayment();
   }, [pidx]);
 
-  return (
-    <div className="min-h-screen  flex flex-col mt-24">
-      <Navbar />
-      
-      <div className="flex-grow container mx-auto px-4 py-12">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
-            Checkout
-          </h1>
-          <p className="text-gray-600 text-lg">Complete your order in just a few steps</p>
+  if (cartItems.length === 0)
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center bg-white">
+          <div className="text-center p-8">
+            <div className="mb-6">
+              <svg
+                className="w-32 h-32 mx-auto text-gray-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                />
+              </svg>
+            </div>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              Your Cart is Empty
+            </h2>
+            <p className="text-gray-600 mb-8">
+              Add some items to your cart to proceed with checkout
+            </p>
+            <button
+              onClick={() => navigate("/shop")}
+              className="bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-300"
+            >
+              Browse Products
+            </button>
+          </div>
         </div>
+        <Footer />
+      </>
+    );
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Side - User Info Form */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-3 rounded-xl">
-                  <User className="w-6 h-6 text-white" />
+  return (
+    <>
+      <Navbar />
+      {showSuccessModal && <SuccessModal onClose={() => setShowSuccessModal(false)} />}
+
+      <div className="min-h-screen bg-white py-12 px-4 mt-24">
+        <div className="max-w-6xl mx-auto">
+          {/* Back Button */}
+          <button
+            onClick={handleBackButton}
+            className="mb-6 flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition duration-200 group"
+          >
+            <svg
+              className="w-5 h-5 transform group-hover:-translate-x-1 transition duration-200"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            <span className="font-semibold">Back to Home</span>
+          </button>
+
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 mb-3">
+              Checkout
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Complete your purchase securely
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Order Summary */}
+            <div className="space-y-6">
+              <div className="bg-gray-50 rounded-2xl shadow-xl p-6 border border-gray-200">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    Order Summary
+                  </h2>
+                  <span className="bg-blue-100 text-blue-600 px-4 py-1 rounded-full text-sm font-semibold">
+                    {cartItems.length} {cartItems.length === 1 ? "Item" : "Items"}
+                  </span>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-800">Customer Information</h2>
+
+                <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+                  {cartItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="bg-white rounded-xl p-4 flex items-center gap-4 border border-gray-200 hover:shadow-md transition duration-200"
+                    >
+                      <div className="flex-shrink-0 bg-gray-50 rounded-lg p-2 border border-gray-200">
+                        <img
+                          src={
+                            item.image.startsWith("http")
+                              ? item.image
+                              : `http://127.0.0.1:8000/storage/${item.image}`
+                          }
+                          alt={item.name}
+                          className="w-20 h-20 object-contain"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-bold text-gray-800 mb-2">{item.name}</p>
+                        <div className="flex items-center justify-between">
+                          <p className="text-gray-600 text-sm">
+                            <span className="font-semibold text-blue-600">
+                              Nrs. {item.price}
+                            </span>
+                          </p>
+                          <p className="text-gray-600 text-sm">
+                            Qty: <span className="font-semibold">{item.quantity || 1}</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="border-t-2 border-gray-200 mt-6 pt-6">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600">Subtotal:</span>
+                    <span className="font-semibold text-gray-800">Nrs. {getCartTotal()}</span>
+                  </div>
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-gray-600">Shipping:</span>
+                    <span className="font-semibold text-green-600">FREE</span>
+                  </div>
+                  <div className="flex justify-between items-center pt-4 border-t border-gray-200">
+                    <span className="text-xl font-bold text-gray-800">Total:</span>
+                    <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
+                      Nrs. {getCartTotal()}
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-6">
-                {/* Name Field */}
-                <div className="relative">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                      name="name"
-                      placeholder="John Doe"
-                      value={userInfo.name}
-                      onChange={handleInputChange}
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all outline-none text-gray-800"
+              {/* Security Badge */}
+              <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                <div className="flex items-center space-x-3">
+                  <svg
+                    className="w-8 h-8 text-green-600 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
                     />
-                  </div>
-                </div>
-
-                {/* Email Field */}
-                <div className="relative">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email Address
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                      name="email"
-                      placeholder="john@example.com"
-                      value={userInfo.email}
-                      onChange={handleInputChange}
-                      type="email"
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all outline-none text-gray-800"
-                    />
-                  </div>
-                </div>
-
-                {/* Password Field */}
-                <div className="relative">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                      name="password"
-                      placeholder="••••••••"
-                      type="password"
-                      value={userInfo.password}
-                      onChange={handleInputChange}
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all outline-none text-gray-800"
-                    />
-                  </div>
-                </div>
-
-                {/* Phone Field */}
-                <div className="relative">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Phone Number
-                  </label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input
-                      name="phone"
-                      placeholder="+977 9800000000"
-                      value={userInfo.phone}
-                      onChange={handleInputChange}
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all outline-none text-gray-800"
-                    />
-                  </div>
-                </div>
-
-                {/* Address Field */}
-                <div className="relative">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Delivery Address
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
-                    <textarea
-                      name="address"
-                      placeholder="Enter your complete delivery address..."
-                      value={userInfo.address}
-                      onChange={handleInputChange}
-                      rows="4"
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-500 transition-all outline-none text-gray-800 resize-none"
-                    />
+                  </svg>
+                  <div>
+                    <p className="font-semibold text-green-800">Secure Checkout</p>
+                    <p className="text-sm text-green-700">
+                      Your payment information is encrypted and secure
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Right Side - Order Summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 sticky top-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-3 rounded-xl">
-                  <ShoppingCart className="w-6 h-6 text-white" />
-                </div>
-                <h2 className="text-2xl font-bold text-gray-800">Order Summary</h2>
-              </div>
-
-              {/* Cart Items */}
-              <div className="space-y-4 mb-6">
-                {cartItems && cartItems.length > 0 ? (
-                  cartItems.map((item, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                      <Package className="w-5 h-5 text-purple-500" />
-                      <div className="flex-grow">
-                        <p className="font-medium text-gray-800 text-sm">{item.name || 'Product'}</p>
-                        <p className="text-xs text-gray-500">Qty: {item.quantity || 1}</p>
-                      </div>
-                      <p className="font-bold text-gray-800">Rs. {item.price || 0}</p>
+            {/* User Information & Payment */}
+            <div className="space-y-6">
+              <div className="bg-gray-50 rounded-2xl shadow-xl p-6 border border-gray-200">
+                <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                  Shipping Information
+                </h2>
+                <div className="space-y-4">
+                  {["name", "email", "password", "phone"].map((field) => (
+                    <div key={field}>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        {field === "name"
+                          ? "Full Name"
+                          : field.charAt(0).toUpperCase() + field.slice(1)}
+                      </label>
+                      <input
+                        type={field === "password" ? "password" : "text"}
+                        name={field}
+                        placeholder={
+                          field === "name"
+                            ? "John Doe"
+                            : field === "email"
+                            ? "john@example.com"
+                            : field === "password"
+                            ? "********"
+                            : "+977 98XXXXXXXX"
+                        }
+                        value={userInfo[field]}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition bg-white"
+                      />
                     </div>
-                  ))
-                ) : (
-                  <div className="text-center py-6 text-gray-500">
-                    <ShoppingCart className="w-12 h-12 mx-auto mb-2 opacity-30" />
-                    <p>No items in cart</p>
+                  ))}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Delivery Address
+                    </label>
+                    <textarea
+                      name="address"
+                      placeholder="Street address, city, postal code"
+                      value={userInfo.address}
+                      onChange={handleInputChange}
+                      required
+                      rows="3"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition resize-none bg-white"
+                    />
                   </div>
-                )}
-              </div>
-
-              {/* Total */}
-              <div className="border-t-2 border-gray-200 pt-4 mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-800 font-medium">Rs. {getCartTotal()}</span>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-gray-600">Shipping</span>
-                  <span className="text-green-600 font-medium">Free</span>
-                </div>
-                <div className="flex justify-between items-center pt-3 border-t border-gray-200">
-                  <span className="text-lg font-bold text-gray-800">Total</span>
-                  <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                    Rs. {getCartTotal()}
-                  </span>
                 </div>
               </div>
 
-              {/* Payment Button */}
-              <button
-                onClick={handleKhaltiPay}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center gap-2 group"
-              >
-                <CreditCard className="w-5 h-5" />
-                <span>Pay with Khalti</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-
-              {paymentCompleted && (
-                <div className="mt-4 p-4 bg-green-50 border-2 border-green-200 rounded-xl flex items-center gap-3 animate-pulse">
-                  <CheckCircle className="w-6 h-6 text-green-600" />
-                  <span className="text-green-800 font-semibold">Payment Completed!</span>
+              {/* Payment Section */}
+              <div className="bg-gray-50 rounded-2xl shadow-xl p-6 border border-gray-200">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800">Payment</h2>
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/6/61/Khalti_logo.png"
+                    alt="Khalti"
+                    className="h-8"
+                  />
                 </div>
-              )}
-
-              {/* Security Badge */}
-              <div className="mt-6 text-center">
-                <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
-                  <Lock className="w-3 h-3" />
-                  Secure checkout powered by Khalti
-                </p>
+                <button
+                  onClick={handleKhaltiPay}
+                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 flex items-center justify-center"
+                >
+                  Pay with Khalti (Demo)
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <Footer />
-    </div>
+    </>
   );
 };
 
