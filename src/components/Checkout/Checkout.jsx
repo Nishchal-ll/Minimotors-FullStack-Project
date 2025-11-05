@@ -390,16 +390,16 @@ const Checkout = () => {
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-800">Payment</h2>
                   <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/6/61/Khalti_logo.png"
+                    src="https://khaltibyime.khalti.com/wp-content/uploads/2025/07/Logo-for-Blog.png"
                     alt="Khalti"
                     className="h-8"
                   />
                 </div>
                 <button
                   onClick={handleKhaltiPay}
-                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 flex items-center justify-center"
+                  className="w-full bg-gradient-to-r from-red-500 to-red-800 hover:from-red-600 hover:to-red-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 flex items-center justify-center"
                 >
-                  Pay with Khalti (Demo)
+                  Pay with Khalti 
                 </button>
               </div>
             </div>
