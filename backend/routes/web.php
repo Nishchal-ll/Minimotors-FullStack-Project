@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\Auth\GoogleController;
 use App\Http\Controllers\CartController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -71,5 +72,4 @@ Route::post('/orders/{id}/refund', [OrderController::class, 'refund'])->name('or
 
 Route::get('auth/google', [App\Http\Controllers\Admin\Auth\GoogleController::class, 'redirectToGoogle'])->name('admin.google.redirect');
 Route::get('auth/google/callback', [App\Http\Controllers\Admin\Auth\GoogleController::class, 'handleGoogleCallback'])->name('admin.google.callback');
-
 

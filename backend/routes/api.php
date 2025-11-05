@@ -48,3 +48,5 @@ Route::post('/cart/clear', function (Request $request) {
 
 Route::post('/site-reviews', [SiteReviewController::class, 'store']);
 Route::get('/site-reviews', [SiteReviewController::class, 'index']);
+
+Route::post('/khalti/initiate', [KhaltiController::class, 'initiate']);
