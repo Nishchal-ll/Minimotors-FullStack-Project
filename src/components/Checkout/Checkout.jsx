@@ -155,6 +155,7 @@ const Checkout = () => {
         setPaymentCompleted(true);
         setShowSuccessModal(true);
         clearCart();
+         navigate("/");
       } else {
         alert("❌ Payment not completed");
       }

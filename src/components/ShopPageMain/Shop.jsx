@@ -73,6 +73,7 @@ export default function ShopPage() {
       image: `http://127.0.0.1:8000/storage/${item.image}`,
     };
     addToCart(itemWithFullImage);
+      document.body.style.overflow = 'unset';
     navigate("/checkout", { state: { item: itemWithFullImage } });
   };
 
