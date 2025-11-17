@@ -12,7 +12,7 @@ Admins can manage products, process orders, and update their delivery status —
 - 🛒 **User Registration & Login** (Email-based system)
 - 🔍 **Browse Products** by category
 - 🧺 **Add to Cart** and manage cart items
-- 💳 **Checkout via Stripe (Test Mode)**
+- 💳 **Checkout via Khalti (Test Mode)**
 - 📦 **Order Tracking** — view order status (*Pending*, *Processed*, *Delivered*, *Refunded*)
 - 📨 **Order Confirmation Email** after successful purchase
 - 👤 **Personal Dashboard** — view all past orders
@@ -36,10 +36,11 @@ Admins can manage products, process orders, and update their delivery status —
 | **Frontend** | React, React Router, Axios, Tailwind CSS |
 | **Backend** | Laravel 10 (RESTful API) |
 | **Database** | MySQL |
-| **Payment Gateway** | Stripe (Test Mode) |
+| **Payment Gateway** | Khalti (Test Mode) |
 | **Authentication** | Email Login (LocalStorage based) |
 | **Mail System** | Laravel Mail (SMTP) |
 | **Image Storage** | Laravel File Storage (Public Disk) |
+
 
 
 
