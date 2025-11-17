@@ -22,6 +22,7 @@ class KhaltiController extends Controller
                 'Authorization' => 'Key ' . env('KHALTI_SECRET_KEY'),
                 'Content-Type' => 'application/json',
             ])->post('https://dev.khalti.com/api/v2/epayment/initiate/', $data);
+             
 
             return response()->json($resp->json(), $resp->status());
         } catch (\Exception $e) {
