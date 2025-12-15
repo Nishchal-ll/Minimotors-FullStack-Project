@@ -10,27 +10,27 @@ Admins can manage products, process orders, and update their delivery status —
 
 ### Home Page
 
-![Home Page]({{HOME_PAGE_URL}})
+![Home Page](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/homepage.jpg)
 
 ### Shop Page
 
-![Shop Page]({{SHOP_PAGE_URL}})
+![Shop Page](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/shoppage.jpg)
 
 ### User Dashboard
 
-![User Dashboard]({{USER_DASHBOARD_URL}})
+![User Dashboard]([{{USER_DASHBOARD_URL}}](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/userdashboard.jpg))
 
 ### Orders Dashboard
 
-![Orders Dashboard]({{ORDERS_DASHBOARD_URL}})
+![Orders Dashboard]([{{ORDERS_DASHBOARD_URL}}](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/order.jpg))
 
 ### Admin Dashboard
 
-![Admin Dashboard]({{ADMIN_DASHBOARD_URL}})
+![Admin Dashboard](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/dashboard.jpg)
 
 ### Khalti Payment
 
-![Khalti Payment]({{KHALTI_PAYMENT_URL}})
+![Khalti Payment](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/khalti.jpg)
 
 ---
 
@@ -73,15 +73,5 @@ Admins can manage products, process orders, and update their delivery status —
 
 ---
 
-## 🌐 Image URLs
 
-Replace the placeholders below with your actual image URLs.
 
-```text
-HOME_PAGE_URL = 'https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/homepage.jpg'
-SHOP_PAGE_URL = 'https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/shoppage.jpg'
-USER_DASHBOARD_URL = 'https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/userdashboard.jpg'
-ORDERS_DASHBOARD_URL = 'https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/order.jpg'
-ADMIN_DASHBOARD_URL = 'https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/dashboard.jpg'
-KHALTI_PAYMENT_URL = 'https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/khalti.jpg'
-```
