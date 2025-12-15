@@ -18,11 +18,11 @@ Admins can manage products, process orders, and update their delivery status —
 
 ### User Dashboard
 
-![User Dashboard]([{{USER_DASHBOARD_URL}}](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/userdashboard.jpg))
+![User Dashboard](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/userdashboard.jpg)
 
 ### Orders Dashboard
 
-![Orders Dashboard]([{{ORDERS_DASHBOARD_URL}}](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/order.jpg))
+![Orders Dashboard](https://github.com/Nishchal-ll/Minimotors-FullStack-Project/blob/dbc8ea7d3c477e9aff806d224002ec40707b02fd/order.jpg)
 
 ### Admin Dashboard
 
@@ -72,6 +72,7 @@ Admins can manage products, process orders, and update their delivery status —
 | **Image Storage**   | Laravel File Storage (Public Disk)       |
 
 ---
+
 
 
 
